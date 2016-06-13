@@ -18,7 +18,12 @@ case class LockedMonitor(instance: String, frame: String, sourceReference: Strin
 /**
   * A single stack trace
   */
-case class Thread(id: String, name: String, state: String, stack: Seq[String] = Seq.empty, monitors: Seq[LockedMonitor] = Seq.empty) {
+case class Thread(id: String,
+                  name: String,
+                  state: String,
+                  stack: Seq[String] = Seq.empty,
+                  monitors: Seq[LockedMonitor] = Seq.empty,
+                  firstLine: Int = 0, lastLine: Int = 0) {
 
   def blockedOn(held: Seq[LockedMonitor]): Boolean = {
     state == "BLOCKED" && stack.headOption.exists(frame => held.exists(_.isSameFrame(frame)))
@@ -30,6 +35,10 @@ case class Thread(id: String, name: String, state: String, stack: Seq[String] = 
 
   def hasLockFromFrame(frame: String): Boolean = {
     monitors.exists(_.isSameFrame(frame))
+  }
+
+  def stackTrace: String = {
+    stack.mkString("\n")
   }
 }
 
@@ -46,13 +55,15 @@ object Parser {
     var phase = Ignore
     var thread: Thread = null
     var threads = ArrayBuffer[Thread]()
+    var lineNumber = 1
 
     for (line <- Source.fromFile(fileName).getLines().dropWhile(line => !line.startsWith("All thread stacktraces"))) {
       line match {
         case ThreadDetails(id, name, state) =>
-          if (thread != null)
-            threads += thread
-          thread = Thread(id, name, state)
+          if (thread != null) {
+            threads += thread.copy(lastLine = lineNumber)
+          }
+          thread = Thread(id, name, state, firstLine = lineNumber)
         case "Locked Monitors:" =>
           phase = LockedMonitors
         case "Stacktrace:" =>
@@ -65,6 +76,7 @@ object Parser {
           thread = thread.copy(stack = thread.stack :+ line.trim)
         case _ =>
       }
+      lineNumber += 1
     }
     threads
   }

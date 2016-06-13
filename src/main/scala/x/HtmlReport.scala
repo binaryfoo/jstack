@@ -5,8 +5,39 @@ import java.io.PrintWriter
 class HtmlReport(writer: PrintWriter) {
 
   def start(): Unit = {
-    writer.println("<html>")
-    writer.println("<body>")
+    writer.println(
+      """
+        |<html>
+        |<head>
+        |<link rel='stylesheet' href='bootstrap-3.3.6-dist/css/bootstrap.min.css'>
+        |<link rel='stylesheet' href='bootstrap-3.3.6-dist/css/bootstrap-theme.min.css'>
+        |<script src="jquery.min.js"></script>
+        |<script src='bootstrap-3.3.6-dist/js/bootstrap.min.js'></script>
+        |<script>
+        |  function stackTraceFor() {
+        |    console.log(this);
+        |    console.log(this.getAttribute("thread-id"));
+        |    var threadId = this.getAttribute("data-thread-id");
+        |    return document.getElementById("thread-" + threadId).textContent;
+        |  }
+        |  $(function () {
+        |      $('[data-toggle="popover"]').popover({
+        |          content: stackTraceFor
+        |      });
+        |  })
+        |</script>
+        |<style>
+        |.stackTrace {
+        |  display: none;
+        |}
+        |.popover {
+        |  font-size: smaller;
+        |  max-width: 1200px;
+        |}
+        |</style>
+        |</head>
+        |<body>
+      """.stripMargin)
   }
 
   def finish(): Unit = {
@@ -36,7 +67,15 @@ class HtmlReport(writer: PrintWriter) {
   }
 
   def formatThread(thread: Thread): String = {
-    s"<li>${thread.name} ${thread.stack.head} ${thread.state}</li>"
+    s"""<li>
+        |<span data-container="body" data-toggle="popover" data-placement="bottom" data-thread-id="${thread.id}" tabindex="0" data-trigger="focus">
+        |  ${thread.name} ${thread.stack.head} ${thread.state}
+        |</span>
+        |<span class="stackTrace" id="thread-${thread.id}">
+        |${thread.stackTrace}
+        |</span>
+        |</li>
+     """.stripMargin
   }
 }
 
