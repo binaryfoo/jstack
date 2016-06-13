@@ -5,7 +5,10 @@ object Main {
   def main(args: Array[String]) {
     val allThreads = Parser.parse("src/test/resources/gosupport2.txt")
 
-    countByState(allThreads).foreach(println)
+    for ((state, count) <- countByState(allThreads)) {
+      println(s"$state\t$count")
+    }
+    println(s"${allThreads.size} total")
 
     // dbcp threads aren't blocked ...
     val edges = for {
@@ -19,6 +22,11 @@ object Main {
       printTree(root, edges)
     }
 
+    // dpcp threads
+    println("Waiting for PoolingDataSource.getConnection")
+    for (thread <- allThreads if thread.state == "WAITING" && thread.stack.exists(_.contains("PoolingDataSource.getConnection"))) {
+      println(formatThread(thread, "  "))
+    }
   }
 
   def countByState(threads: Seq[Thread]): Map[String, Int] = threads.groupBy(_.state).mapValues(_.size)
@@ -32,10 +40,14 @@ object Main {
   }
 
   def printTree(root: Thread, edges: Set[(Thread, Thread)], indent: String = ""): Unit = {
-    println(s"$indent${root.name} ${root.stack.head} ${root.state}")
+    println(formatThread(root, indent))
     val nextIndent = indent + "  "
     for ((src, dest) <- edges if dest == root) {
       printTree(src, edges, nextIndent)
     }
+  }
+
+  def formatThread(thread: Thread, indent: String = ""): String = {
+    s"$indent${thread.name} ${thread.stack.head} ${thread.state}"
   }
 }
