@@ -24,6 +24,10 @@ case class Thread(id: String, name: String, state: String, stack: Seq[String] = 
     state == "BLOCKED" && stack.headOption.exists(frame => held.exists(_.isSameFrame(frame)))
   }
 
+  def waitingFor(frame: String): Boolean = {
+    state == "WAITING" && stack.exists(_.contains("PoolingDataSource.getConnection"))
+  }
+
   def hasLockFromFrame(frame: String): Boolean = {
     monitors.exists(_.isSameFrame(frame))
   }

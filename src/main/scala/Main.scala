@@ -1,32 +1,34 @@
-import x.{Parser, Thread}
+import x.{HtmlReport, Parser, Thread}
 
 object Main {
 
   def main(args: Array[String]) {
-    val allThreads = Parser.parse("src/test/resources/gosupport2.txt")
+    val threads = Parser.parse("src/test/resources/gosupport2.txt")
 
-    for ((state, count) <- countByState(allThreads)) {
+    for ((state, count) <- countByState(threads)) {
       println(s"$state\t$count")
     }
-    println(s"${allThreads.size} total")
+    println(s"${threads.size} total")
 
     // dbcp threads aren't blocked ...
     val edges = for {
-      thread <- allThreads.toSet if thread.state == "BLOCKED"
-      lockHolder <- allThreads.find(_.hasLockFromFrame(thread.stack.head))
+      thread <- threads.toSet if thread.state == "BLOCKED"
+      lockHolder <- threads.find(_.hasLockFromFrame(thread.stack.head))
     } yield (thread, lockHolder)
 
     val roots = for ((_, holder) <- edges if !edges.exists(_._1 == holder)) yield holder
 
+    val report = HtmlReport("report.html")
+    report.start()
     for (root <- roots) {
-      printTree(root, edges)
+      report.printTree(root, edges)
     }
 
     // dpcp threads
-    println("Waiting for PoolingDataSource.getConnection")
-    for (thread <- allThreads if thread.state == "WAITING" && thread.stack.exists(_.contains("PoolingDataSource.getConnection"))) {
-      println(formatThread(thread, "  "))
-    }
+    val waitingForConnection = threads.filter(_.waitingFor("PoolingDataSource.getConnection"))
+    report.printTree("Waiting for PoolingDataSource.getConnection", waitingForConnection)
+
+    report.finish()
   }
 
   def countByState(threads: Seq[Thread]): Map[String, Int] = threads.groupBy(_.state).mapValues(_.size)
