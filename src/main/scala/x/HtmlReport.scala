@@ -15,14 +15,13 @@ class HtmlReport(writer: PrintWriter) {
         |<script src='bootstrap-3.3.6-dist/js/bootstrap.min.js'></script>
         |<script>
         |  function stackTraceFor() {
-        |    console.log(this);
-        |    console.log(this.getAttribute("thread-id"));
         |    var threadId = this.getAttribute("data-thread-id");
-        |    return document.getElementById("thread-" + threadId).textContent;
+        |    return document.getElementById("thread-" + threadId).innerHTML;
         |  }
         |  $(function () {
         |      $('[data-toggle="popover"]').popover({
-        |          content: stackTraceFor
+        |          content: stackTraceFor,
+        |          html: true
         |      });
         |  })
         |</script>
@@ -33,6 +32,11 @@ class HtmlReport(writer: PrintWriter) {
         |.popover {
         |  font-size: smaller;
         |  max-width: 1200px;
+        |  white-space: pre-wrap;
+        |}
+        |.package {
+        |  font-size: smaller;
+        |  color: dimgray;
         |}
         |</style>
         |</head>
@@ -68,14 +72,27 @@ class HtmlReport(writer: PrintWriter) {
 
   def formatThread(thread: Thread): String = {
     s"""<li>
-        |<span data-container="body" data-toggle="popover" data-placement="bottom" data-thread-id="${thread.id}" tabindex="0" data-trigger="focus">
-        |  ${thread.name} ${thread.stack.head} ${thread.state}
+        |<span data-container="body" data-toggle="popover" data-placement="bottom" data-thread-id="${thread.id}" tabindex="0">
+        |  ${thread.name} ${decorateFrame(thread.stack.head)} ${thread.state}
         |</span>
         |<span class="stackTrace" id="thread-${thread.id}">
-        |${thread.stackTrace}
+        |${decorateFrames(thread.stack)}
         |</span>
         |</li>
      """.stripMargin
+  }
+
+  val StackFrame = """([^(]+)"""
+
+  def decorateFrames(frames: Seq[String]): String = {
+    frames.map(decorateFrame).mkString("\n")
+  }
+
+  def decorateFrame(frame: String): String = {
+    val parts = frame.split('.')
+    val methodCallIndex = parts.indexWhere(_.contains("("))
+    val (pkg, methodCall) = parts.splitAt(methodCallIndex)
+    """<span class="package">""" + pkg.mkString(".") + """</span><span class="methodCall">.""" + methodCall.mkString(".") + "</span>"
   }
 }
 
