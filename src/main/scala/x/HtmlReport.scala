@@ -117,11 +117,19 @@ class HtmlReport(writer: PrintWriter) {
     val methodCallIndex = parts.indexWhere(_.contains("("))
     val (pkg, methodCall) = parts.splitAt(methodCallIndex)
     val MethodCallParts(methodName, sourceReference) = methodCall.mkString(".")
-    (cleanJRubyPackage(pkg.mkString(".")), methodName, sourceReference)
+    (cleanJRubyPackage(pkg.mkString(".")), methodName, cleanJRubySourceReference(sourceReference))
   }
 
   def cleanJRubyPackage(pkg: String): String = {
-    pkg.replaceAll("""_[0-9a-f]+$""", "")
+    pkg.replaceAll("""_[0-9a-f]{10,}""", "")
+  }
+
+  def cleanJRubySourceReference(ref: String): String = {
+    if (ref.length > 30) {
+      ref.replaceFirst(".*WEB-INF/", "").replaceAll("""_[0-9a-f]{10,}""", "")
+    } else {
+      ref
+    }
   }
 }
 
