@@ -26,7 +26,7 @@ class HtmlReport(writer: PrintWriter) {
         |  })
         |</script>
         |<style>
-        |.stackTrace {
+        |span.stackTrace {
         |  display: none;
         |}
         |.popover {
@@ -37,6 +37,10 @@ class HtmlReport(writer: PrintWriter) {
         |.package {
         |  font-size: smaller;
         |  color: dimgray;
+        |  text-align: right;
+        |}
+        |.methodCall {
+        |  text-align: left;
         |}
         |</style>
         |</head>
@@ -73,10 +77,12 @@ class HtmlReport(writer: PrintWriter) {
   def formatThread(thread: Thread): String = {
     s"""<li>
         |<span data-container="body" data-toggle="popover" data-placement="bottom" data-thread-id="${thread.id}" tabindex="0">
-        |  ${thread.name} ${decorateFrame(thread.stack.head)} ${thread.state}
+        |  ${thread.name} ${decorateTopFrame(thread.stack.head)} ${thread.state}
         |</span>
         |<span class="stackTrace" id="thread-${thread.id}">
+        |<table class="stackTrace">
         |${decorateFrames(thread.stack)}
+        |</table>
         |</span>
         |</li>
      """.stripMargin
@@ -88,11 +94,24 @@ class HtmlReport(writer: PrintWriter) {
     frames.map(decorateFrame).mkString("\n")
   }
 
+  def decorateTopFrame(frame: String): String = {
+    val (pkg, methodCall) = splitMethodCall(frame)
+
+    s"""<span class="package">${pkg.mkString(".")}</span><span class="methodCall">.${methodCall.mkString(".")}</span>"""
+  }
+
   def decorateFrame(frame: String): String = {
+    val (pkg, methodCall) = splitMethodCall(frame)
+    s"""<tr>
+       |<td class="package">${pkg.mkString(".")}</td><td class="methodCall">.${methodCall.mkString(".")}</td>
+       |</tr>""".stripMargin
+  }
+
+  def splitMethodCall(frame: String): (Array[String], Array[String]) = {
     val parts = frame.split('.')
     val methodCallIndex = parts.indexWhere(_.contains("("))
     val (pkg, methodCall) = parts.splitAt(methodCallIndex)
-    """<span class="package">""" + pkg.mkString(".") + """</span><span class="methodCall">.""" + methodCall.mkString(".") + "</span>"
+    (pkg, methodCall)
   }
 }
 
