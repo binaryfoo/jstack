@@ -39,8 +39,12 @@ class HtmlReport(writer: PrintWriter) {
         |  color: dimgray;
         |  text-align: right;
         |}
-        |.methodCall {
-        |  text-align: left;
+        |div.methodCall {
+        |  display: inline-block;
+        |}
+        |span.sourceReference {
+        |  font-size: smaller;
+        |  color: dimgray;
         |}
         |</style>
         |</head>
@@ -95,22 +99,25 @@ class HtmlReport(writer: PrintWriter) {
   }
 
   def decorateTopFrame(frame: String): String = {
-    val (pkg, methodCall) = splitMethodCall(frame)
-    s"""<span class="package">$pkg</span><span class="methodCall">.$methodCall</span>"""
+    val (pkg, methodName, sourceReference) = splitMethodCall(frame)
+    s"""<span class="package">$pkg</span><div class="methodCall">.$methodName(<span class="sourceReference">$sourceReference</span>)</div>"""
   }
 
   def decorateFrame(frame: String): String = {
-    val (pkg, methodCall) = splitMethodCall(frame)
+    val (pkg, methodName, sourceReference) = splitMethodCall(frame)
     s"""<tr>
-       |<td class="package">$pkg</td><td class="methodCall">.$methodCall</td>
+       |<td class="package">$pkg</td><td class="methodCall">.$methodName(<span class="sourceReference">$sourceReference</span>)</td>
        |</tr>""".stripMargin
   }
 
-  def splitMethodCall(frame: String): (String, String) = {
+  val MethodCallParts = """([^(]+)\((.+)\)""".r
+
+  def splitMethodCall(frame: String): (String, String, String) = {
     val parts = frame.split('.')
     val methodCallIndex = parts.indexWhere(_.contains("("))
     val (pkg, methodCall) = parts.splitAt(methodCallIndex)
-    (cleanJRubyPackage(pkg.mkString(".")), methodCall.mkString("."))
+    val MethodCallParts(methodName, sourceReference) = methodCall.mkString(".")
+    (cleanJRubyPackage(pkg.mkString(".")), methodName, sourceReference)
   }
 
   def cleanJRubyPackage(pkg: String): String = {
