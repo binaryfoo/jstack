@@ -5,5 +5,7 @@ Last I looked was produced by [ThreadInformationProvider](https://github.com/goc
 Used hunting performance troubles.
 
 ### Screenshot
-Example from [gosupport2.txt](https://raw.githubusercontent.com/wcurrie/gocd-support/master/src/test/resources/gosupport2.txt)
-![Screenshot](screenshot.png "Example from gosupport2.txt")
+
+Example from [go-log-12.txt](https://raw.githubusercontent.com/wcurrie/gocd-support/master/src/test/resources/gosupport2.txt)
+
+![Screenshot](screenshot.png "Example from go-log-12.txt")
