@@ -96,22 +96,25 @@ class HtmlReport(writer: PrintWriter) {
 
   def decorateTopFrame(frame: String): String = {
     val (pkg, methodCall) = splitMethodCall(frame)
-
-    s"""<span class="package">${pkg.mkString(".")}</span><span class="methodCall">.${methodCall.mkString(".")}</span>"""
+    s"""<span class="package">$pkg</span><span class="methodCall">.$methodCall</span>"""
   }
 
   def decorateFrame(frame: String): String = {
     val (pkg, methodCall) = splitMethodCall(frame)
     s"""<tr>
-       |<td class="package">${pkg.mkString(".")}</td><td class="methodCall">.${methodCall.mkString(".")}</td>
+       |<td class="package">$pkg</td><td class="methodCall">.$methodCall</td>
        |</tr>""".stripMargin
   }
 
-  def splitMethodCall(frame: String): (Array[String], Array[String]) = {
+  def splitMethodCall(frame: String): (String, String) = {
     val parts = frame.split('.')
     val methodCallIndex = parts.indexWhere(_.contains("("))
     val (pkg, methodCall) = parts.splitAt(methodCallIndex)
-    (pkg, methodCall)
+    (cleanJRubyPackage(pkg.mkString(".")), methodCall.mkString("."))
+  }
+
+  def cleanJRubyPackage(pkg: String): String = {
+    pkg.replaceAll("""_[0-9a-f]+$""", "")
   }
 }
 
