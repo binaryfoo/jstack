@@ -3,7 +3,12 @@ import x.{HtmlReport, Parser, Thread}
 object Main {
 
   def main(args: Array[String]) {
-    val threads = Parser.parse("src/test/resources/gosupport2.txt")
+    if (args.length != 1) {
+      System.err.println("usage: <output-of-http://go.example.com/go/api/support>")
+      System.exit(1)
+    }
+
+    val threads = Parser.parse(args(0))
 
     for ((state, count) <- countByState(threads)) {
       println(s"$state\t$count")

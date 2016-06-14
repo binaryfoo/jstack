@@ -9,6 +9,13 @@ repositories {
     mavenCentral()
 }
 
+task run(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'Main'
+    // arguments to pass to the application
+    args 'src/test/resources/gosupport2.txt'
+}
+
 dependencies {
     compile 'org.scala-lang:scala-library:2.11.1'
     testCompile 'org.scalatest:scalatest_2.11:2+'
