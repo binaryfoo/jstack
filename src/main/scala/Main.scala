@@ -15,10 +15,10 @@ object Main {
     }
     println(s"${threads.size} total")
 
-    // dbcp threads aren't blocked ...
+    // dbcp threads aren't blocked on H2's mutex
     val edges = for {
       thread <- threads.toSet if thread.state == "BLOCKED"
-      lockHolder <- threads.find(_.hasLockFromFrame(thread.stack.head))
+      lockHolder <- threads.find(holder => holder.isLikelyBlocking(thread))
     } yield (thread, lockHolder)
 
     val roots = for ((_, holder) <- edges if !edges.exists(_._1 == holder)) yield holder
@@ -31,7 +31,7 @@ object Main {
 
     // dpcp threads
     val waitingForConnection = threads.filter(_.waitingFor("PoolingDataSource.getConnection"))
-    report.printTree("Waiting for PoolingDataSource.getConnection", waitingForConnection)
+    report.printTree(s"Waiting for PoolingDataSource.getConnection (${waitingForConnection.size})", waitingForConnection)
 
     report.finish()
   }

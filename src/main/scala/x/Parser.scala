@@ -33,6 +33,11 @@ case class Thread(id: String,
     state == "WAITING" && stack.exists(_.contains("PoolingDataSource.getConnection"))
   }
 
+  def isLikelyBlocking(victim: Thread): Boolean = {
+    hasLockFromFrame(victim.stack.head) ||
+      (monitors.exists(_.instance.startsWith("org.h2.engine.Database@")) && victim.stack.head.startsWith("org.h2"))
+  }
+
   def hasLockFromFrame(frame: String): Boolean = {
     monitors.exists(_.isSameFrame(frame))
   }

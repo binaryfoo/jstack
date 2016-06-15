@@ -59,9 +59,11 @@ class HtmlReport(writer: PrintWriter) {
   }
 
   def printTree(root: Thread, edges: Set[(Thread, Thread)]): Unit = {
+    val children = edges.filter(_._2 == root)
+    val comment = if (children.nonEmpty) "(" + children.size + " downstream)" else ""
     writer.println("<ul>")
-    writer.println(formatThread(root))
-    for ((src, dest) <- edges if dest == root) {
+    writer.println(formatThread(root, comment))
+    for ((src, dest) <- children) {
       printTree(src, edges)
     }
     writer.println("</ul>")
@@ -78,10 +80,10 @@ class HtmlReport(writer: PrintWriter) {
     writer.println("</ul>")
   }
 
-  def formatThread(thread: Thread): String = {
+  def formatThread(thread: Thread, comment: String = ""): String = {
     s"""<li>
         |<span data-container="body" data-toggle="popover" data-placement="bottom" data-thread-id="${thread.id}" tabindex="0">
-        |  ${thread.name} ${decorateTopFrame(thread.stack.head)} ${thread.state}
+        |  ${thread.name} ${decorateTopFrame(thread.stack.head)} ${thread.state} $comment
         |</span>
         |<span class="stackTrace" id="thread-${thread.id}">
         |<table class="stackTrace">
@@ -99,15 +101,23 @@ class HtmlReport(writer: PrintWriter) {
   }
 
   def decorateTopFrame(frame: String): String = {
-    val (pkg, methodName, sourceReference) = splitMethodCall(frame)
-    s"""<span class="package">$pkg</span><div class="methodCall">.$methodName(<span class="sourceReference">$sourceReference</span>)</div>"""
+    if (frame.nonEmpty) {
+      val (pkg, methodName, sourceReference) = splitMethodCall(frame)
+      s"""<span class="package">$pkg</span><div class="methodCall">.$methodName(<span class="sourceReference">$sourceReference</span>)</div>"""
+    } else {
+      ""
+    }
   }
 
   def decorateFrame(frame: String): String = {
-    val (pkg, methodName, sourceReference) = splitMethodCall(frame)
-    s"""<tr>
-       |<td class="package">$pkg</td><td class="methodCall">.$methodName(<span class="sourceReference">$sourceReference</span>)</td>
-       |</tr>""".stripMargin
+    if (frame.nonEmpty) {
+      val (pkg, methodName, sourceReference) = splitMethodCall(frame)
+      s"""<tr>
+          |<td class="package">$pkg</td><td class="methodCall">.$methodName(<span class="sourceReference">$sourceReference</span>)</td>
+          |</tr>""".stripMargin
+    } else {
+      ""
+    }
   }
 
   val MethodCallParts = """([^(]+)\((.+)\)""".r
