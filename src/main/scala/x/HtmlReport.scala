@@ -4,6 +4,8 @@ import java.io.PrintWriter
 
 class HtmlReport(writer: PrintWriter) {
 
+  private var stackId = 1
+
   def start(): Unit = {
     writer.println(
       """
@@ -15,8 +17,8 @@ class HtmlReport(writer: PrintWriter) {
         |<script src='bower_components/bootstrap/dist/js/bootstrap.min.js'></script>
         |<script>
         |  function stackTraceFor() {
-        |    var threadId = this.getAttribute("data-thread-id");
-        |    return document.getElementById("thread-" + threadId).innerHTML;
+        |    var stackId = this.getAttribute("data-stack-id");
+        |    return document.getElementById(stackId).innerHTML;
         |  }
         |  $(function () {
         |      $('[data-toggle="popover"]').popover({
@@ -58,6 +60,27 @@ class HtmlReport(writer: PrintWriter) {
     writer.close()
   }
 
+  def printTree(root: DeDuplicatedBlockingTree): Unit = {
+    writer.println("<ul>")
+    writer.println(formatThread(root.lockHolder, s"(${root.totalChildren} downstream)"))
+    for (group <- root.blocked) {
+      writer.println("<ul>")
+      val first = summariseThread(group.threads.head)
+      val comment = if (group.threads.size > 1) {
+        val more = group.threads.drop(1)
+        threadListPopover(s"+ ${more.size} more with same stack", more.map(_.name))
+      } else {
+        ""
+      }
+      writer.println(formatStack(group.stack, first, comment))
+      writer.println("</ul>")
+    }
+    for (internal <- root.children) {
+      printTree(internal)
+    }
+    writer.println("</ul>")
+  }
+
   def printTree(root: Thread, edges: Set[(Thread, Thread)]): Unit = {
     val children = edges.filter(_._2 == root)
     val comment = if (children.nonEmpty) "(" + children.size + " downstream)" else ""
@@ -81,17 +104,33 @@ class HtmlReport(writer: PrintWriter) {
   }
 
   def formatThread(thread: Thread, comment: String = ""): String = {
+    formatStack(thread.stack, summariseThread(thread), comment)
+  }
+
+  def summariseThread(thread: Thread): String = {
+    s"${thread.name} ${decorateTopFrame(thread.stack.head)} ${thread.state}"
+  }
+
+  def formatStack(stack: Seq[String], description: String, comment: String = ""): String = {
+    val id = s"stack-$stackId}"
+    stackId += 1
     s"""<li>
-        |<span data-container="body" data-toggle="popover" data-placement="bottom" data-thread-id="${thread.id}" tabindex="0">
-        |  ${thread.name} ${decorateTopFrame(thread.stack.head)} ${thread.state} $comment
+        |<span data-container="body" data-toggle="popover" data-placement="bottom" data-stack-id="$id" tabindex="0" class="stack">
+        |  $description
         |</span>
-        |<span class="stackTrace" id="thread-${thread.id}">
+        | $comment
+        |<span class="stackTrace" id="$id">
         |<table class="stackTrace">
-        |${decorateFrames(thread.stack)}
+        |${decorateFrames(stack)}
         |</table>
         |</span>
         |</li>
      """.stripMargin
+  }
+
+  def threadListPopover(text: String, names: Seq[String]): String = {
+    val popoverText = names.mkString("<br>")
+    s"""<span data-container="body" data-toggle="popover" data-placement="bottom" tabindex="0" class="comment" data-content="$popoverText">$text</span>"""
   }
 
   val StackFrame = """([^(]+)"""

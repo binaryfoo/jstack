@@ -1,4 +1,4 @@
-import x.{HtmlReport, Parser, Thread}
+import x.{BlockingTree, HtmlReport, Parser, Thread}
 
 object Main {
 
@@ -17,7 +17,7 @@ object Main {
 
     // dbcp threads aren't blocked on H2's mutex
     val blockingEdges = for {
-      thread <- threads.toSet if thread.state == "BLOCKED"
+      thread <- threads if thread.state == "BLOCKED"
       lockHolder <- threads.find(holder => holder.isLikelyBlocking(thread))
     } yield (thread, lockHolder)
 
@@ -27,12 +27,12 @@ object Main {
     val poolEdges = for (t <- waitingForConnection) yield (t, dummyThread)
 
     val edges = blockingEdges ++ poolEdges
-    val roots = for ((_, holder) <- edges if !edges.exists(_._1 == holder)) yield holder
+    val roots = BlockingTree.build(edges).map(_.summarise())
 
     val report = HtmlReport("report.html")
     report.start()
     for (root <- roots) {
-      report.printTree(root, edges)
+      report.printTree(root)
     }
 
     report.finish()
