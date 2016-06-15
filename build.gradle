@@ -13,7 +13,7 @@ task run(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     main = 'Main'
     // arguments to pass to the application
-    args 'src/test/resources/gosupport2.txt'
+    args 'src/test/resources/go-log-12.txt'
 }
 
 dependencies {

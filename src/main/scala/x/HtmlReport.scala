@@ -9,10 +9,10 @@ class HtmlReport(writer: PrintWriter) {
       """
         |<html>
         |<head>
-        |<link rel='stylesheet' href='bootstrap-3.3.6-dist/css/bootstrap.min.css'>
-        |<link rel='stylesheet' href='bootstrap-3.3.6-dist/css/bootstrap-theme.min.css'>
-        |<script src="jquery.min.js"></script>
-        |<script src='bootstrap-3.3.6-dist/js/bootstrap.min.js'></script>
+        |<link rel='stylesheet' href='bower_components/bootstrap/dist/css/bootstrap.min.css'>
+        |<link rel='stylesheet' href='bower_components/bootstrap/dist/css/bootstrap-theme.min.css'>
+        |<script src="bower_components/jquery/dist/jquery.min.js"></script>
+        |<script src='bower_components/bootstrap/dist/js/bootstrap.min.js'></script>
         |<script>
         |  function stackTraceFor() {
         |    var threadId = this.getAttribute("data-thread-id");
