@@ -1,64 +1,66 @@
 package jstack
 
-import java.io.{PrintWriter, StringWriter}
+import jstack.UrlParser.parseQueryParams
+import org.scalajs.dom.html.{Form, TextArea}
+import org.scalajs.dom.raw.FileReader
+import org.scalajs.dom.{DragEvent, Event, html}
 
 import scala.scalajs.js.annotation.JSExport
-import org.scalajs.dom
-import org.scalajs.dom.html
-import org.scalajs.dom.raw.FileReader
-import x.{BlockingTree, HtmlReport, Parser}
-
 
 @JSExport
 object JsMain {
 
-  @JSExport
-  def main(doc: html.Document) {
-    val form = doc.getElementById("stackForm").asInstanceOf[html.Form]
-    val input = doc.getElementById("stackInput").asInstanceOf[html.TextArea]
-    val output = doc.getElementById("output")
+  val Url = """(https?://[^ ]+)""".r.unanchored
 
-    def render(value: String): Unit = {
-      val lines = value.split("\n")
-      val threads = Parser.parse(lines.iterator)
-      val roots = BlockingTree.buildBlockingTree(threads)
-      val out = new StringWriter()
-      val writer = new PrintWriter(out)
-      val report = new HtmlReport(writer)
-      for (root <- roots) {
-        report.printTree(root)
+  @JSExport
+  def main(doc: html.Document, search: String) {
+    val form = doc.getElementById("stackForm").asInstanceOf[Form]
+    val input = doc.getElementById("stackInput").asInstanceOf[TextArea]
+    val output = doc.getElementById("output")
+    val renderer = new JstackRenderer(output)
+
+    configureDragAndDropFile(input, renderer)
+
+    form.onsubmit = (e: Event) => {
+      e.preventDefault()
+
+      input.value match {
+        case Url(url) =>
+          renderer.fromUrl(url)
+        case text =>
+          renderer.render(text)
       }
-      writer.close()
-      output.innerHTML = out.toString
     }
 
-    input.addEventListener("dragenter", (e: dom.Event) => {
+    for (url <- parseQueryParams(search).get("url")) {
+      input.value = url
+      renderer.fromUrl(url)
+    }
+  }
+
+  def configureDragAndDropFile(input: TextArea, renderer: JstackRenderer): Unit = {
+    input.addEventListener("dragenter", (e: Event) => {
       e.stopPropagation()
       e.preventDefault()
     }, false)
 
-    input.addEventListener("dragover", (e: dom.Event) => {
+    input.addEventListener("dragover", (e: Event) => {
       e.stopPropagation()
       e.preventDefault()
     }, false)
 
-    input.addEventListener("drop", (e: dom.DragEvent) => {
+    input.addEventListener("drop", (e: DragEvent) => {
       e.stopPropagation()
       e.preventDefault()
 
       val reader = new FileReader()
-      reader.onload = (e: dom.Event) => {
+      reader.onload = (e: Event) => {
         val contents = reader.result.asInstanceOf[String]
-        render(contents)
+        renderer.render(contents)
       }
       val item = e.dataTransfer.files.item(0)
-      println(s"reading $item")
       reader.readAsText(item)
     }, false)
-
-    form.onsubmit = (e: dom.Event) => {
-      e.preventDefault()
-      render(input.value)
-    }
   }
+
 }

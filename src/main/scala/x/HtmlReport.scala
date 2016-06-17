@@ -28,12 +28,8 @@ class HtmlReport(writer: PrintWriter) {
         |  })
         |</script>
         |<style>
-        |span.stackTrace {
-        |  display: none;
-        |}
-        |.popover {
+        |.stackTrace,.popover {
         |  font-size: smaller;
-        |  max-width: 1200px;
         |  white-space: pre-wrap;
         |}
         |.package {
@@ -112,14 +108,14 @@ class HtmlReport(writer: PrintWriter) {
   }
 
   def formatStack(stack: Seq[String], description: String, comment: String = ""): String = {
-    val id = s"stack-$stackId}"
+    val id = s"stack-$stackId"
     stackId += 1
     s"""<li>
-        |<span data-container="body" data-toggle="popover" data-placement="bottom" data-stack-id="$id" tabindex="0" class="stack">
+        |<a role="button" href="#$id" data-toggle="collapse" aria-expanded="false" aria-controls="$id" class="stack">
         |  $description
-        |</span>
+        |</a>
         | $comment
-        |<span class="stackTrace" id="$id">
+        |<span class="stackTrace collapse" id="$id">
         |<table class="stackTrace">
         |${decorateFrames(stack)}
         |</table>

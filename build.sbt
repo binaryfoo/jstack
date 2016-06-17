@@ -22,6 +22,6 @@ skip in packageJSDependencies := false
 
 scalaJSUseRhino in Global := false
 
-bootSnippet := "jstack.JsMain().main(document);"
+bootSnippet := "jstack.JsMain().main(document, window.location.search);"
 
 updateBrowsers <<= updateBrowsers.triggeredBy(fastOptJS in Compile)

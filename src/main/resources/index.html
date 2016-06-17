@@ -14,22 +14,22 @@
 <body>
 
 <div class="container">
-    <form id="stackForm">
+    <form id="stackForm" class="form-inline">
         <div class="form-group">
             <label for="stackInput">Stack Trace</label>
-            <textarea class="form-control" name="stackInput" id="stackInput" rows="3"></textarea>
+            <textarea class="form-control" name="stackInput" id="stackInput" cols="80" rows="1" placeholder="Paste jstack output, URL or drop a file"></textarea>
         </div>
         <button type="submit" class="btn btn-default">Go</button>
     </form>
     <div id="output"></div>
 </div>
 
-<script type="text/javascript" src="../gocd-support-opt.js"></script>
-<!--<script type="text/javascript" src="../gocd-support-fastopt.js"></script>-->
+<script type="text/javascript" src="../gocd-support-fastopt.js"></script>
+<!--<script type="text/javascript" src="../gocd-support-opt.js"></script>-->
 <script src="report.js"></script>
 <script type="text/javascript" src="/workbench.js"></script>
 <script>
-    jstack.JsMain().main(document);
+    jstack.JsMain().main(document, window.location.search);
 </script>
 </body>
 </html>
