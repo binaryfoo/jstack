@@ -52,17 +52,22 @@ object ParserState extends Enumeration {
 }
 
 object Parser {
+
   val ThreadDetails = """(\d+), ([^,]+), (.+)""".r
   val LockedMonitorDetails = """(.*?) at ([^(]+)\(([^)]+)\)""".r
 
   def parse(fileName: String): Seq[Thread] = {
+    parse(Source.fromFile(fileName).getLines())
+  }
+
+  def parse(lines: Iterator[String]): Seq[Thread] = {
     import ParserState._
     var phase = Ignore
     var thread: Thread = null
     var threads = ArrayBuffer[Thread]()
     var lineNumber = 1
 
-    for (line <- Source.fromFile(fileName).getLines().dropWhile(line => !line.startsWith("All thread stacktraces"))) {
+    for (line <- lines.dropWhile(line => !line.startsWith("All thread stacktraces"))) {
       line match {
         case ThreadDetails(id, name, state) =>
           if (thread != null) {

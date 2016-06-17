@@ -1,4 +1,4 @@
-import x.{BlockingTree, HtmlReport, Parser, Thread}
+import x._
 
 object Main {
 
@@ -15,19 +15,7 @@ object Main {
     }
     println(s"${threads.size} total")
 
-    // dbcp threads aren't blocked on H2's mutex
-    val blockingEdges = for {
-      thread <- threads if thread.state == "BLOCKED"
-      lockHolder <- threads.find(holder => holder.isLikelyBlocking(thread))
-    } yield (thread, lockHolder)
-
-    // dpcp threads
-    val dummyThread = Thread("", "Waiting for PoolingDataSource.getConnection", "", Seq(""))
-    val waitingForConnection = threads.filter(_.waitingFor("PoolingDataSource.getConnection"))
-    val poolEdges = for (t <- waitingForConnection) yield (t, dummyThread)
-
-    val edges = blockingEdges ++ poolEdges
-    val roots = BlockingTree.build(edges).map(_.summarise())
+    val roots = BlockingTree.buildBlockingTree(threads)
 
     val report = HtmlReport("report.html")
     report.start()

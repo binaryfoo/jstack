@@ -1,0 +1,20 @@
+span.stackTrace {
+    display: none;
+}
+.popover {
+    font-size: smaller;
+    max-width: 1200px;
+    white-space: pre-wrap;
+}
+.package {
+    font-size: smaller;
+    color: dimgray;
+    text-align: right;
+}
+div.methodCall {
+    display: inline-block;
+}
+span.sourceReference {
+    font-size: smaller;
+    color: dimgray;
+}
