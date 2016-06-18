@@ -14,12 +14,17 @@
 <body>
 
 <div class="container">
-    <form id="stackForm" class="form-inline">
+    <form id="stackForm">
         <div class="form-group">
             <label for="stackInput">Stack Trace</label>
             <textarea class="form-control" name="stackInput" id="stackInput" cols="80" rows="1" placeholder="Paste jstack output, URL or drop a file"></textarea>
         </div>
-        <button type="submit" class="btn btn-default">Go</button>
+        <label for="viewType">View</label>
+        <select name="viewType" id="viewType">
+            <option value="byStack" selected>Group by stack trace</option>
+            <option value="contention">Group lock contention</option>
+            <option value="raw">Raw</option>
+        </select>
     </form>
     <div id="output"></div>
 </div>

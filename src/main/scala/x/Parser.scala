@@ -60,6 +60,10 @@ object Parser {
     parse(Source.fromFile(fileName).getLines())
   }
 
+  def parseText(text: String): Seq[Thread] = {
+    parse(text.split('\n').iterator)
+  }
+
   def parse(lines: Iterator[String]): Seq[Thread] = {
     import ParserState._
     var phase = Ignore

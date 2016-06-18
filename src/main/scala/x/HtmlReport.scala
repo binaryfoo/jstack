@@ -77,7 +77,7 @@ class HtmlReport(writer: PrintWriter) {
     writer.println("</ul>")
   }
 
-  def printTree(root: Thread, edges: Set[(Thread, Thread)]): Unit = {
+  def printTree(root: Thread, edges: Set[(Thread, Thread)] = Set.empty): Unit = {
     val children = edges.filter(_._2 == root)
     val comment = if (children.nonEmpty) "(" + children.size + " downstream)" else ""
     writer.println("<ul>")

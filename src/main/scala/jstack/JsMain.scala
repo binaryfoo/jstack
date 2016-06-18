@@ -1,44 +1,43 @@
 package jstack
 
 import jstack.UrlParser.parseQueryParams
-import org.scalajs.dom.html.{Form, TextArea}
-import org.scalajs.dom.raw.FileReader
+import org.scalajs.dom.html.{Form, Input, TextArea}
 import org.scalajs.dom.{DragEvent, Event, html}
 
 import scala.scalajs.js.annotation.JSExport
+import scala.concurrent.ExecutionContext.Implicits.global
 
 @JSExport
 object JsMain {
-
-  val Url = """(https?://[^ ]+)""".r.unanchored
 
   @JSExport
   def main(doc: html.Document, search: String) {
     val form = doc.getElementById("stackForm").asInstanceOf[Form]
     val input = doc.getElementById("stackInput").asInstanceOf[TextArea]
+    val viewType = doc.getElementById("viewType").asInstanceOf[Input]
     val output = doc.getElementById("output")
-    val renderer = new JstackRenderer(output)
 
-    configureDragAndDropFile(input, renderer)
+    val model = new JstackModel()
+    val controller = new JstackController(model, output, input, viewType)
+
+    configureDragAndDropFile(input, controller)
 
     form.onsubmit = (e: Event) => {
       e.preventDefault()
+      controller.update()
+    }
 
-      input.value match {
-        case Url(url) =>
-          renderer.fromUrl(url)
-        case text =>
-          renderer.render(text)
-      }
+    viewType.onchange = (e: Event) => {
+      controller.update()
     }
 
     for (url <- parseQueryParams(search).get("url")) {
       input.value = url
-      renderer.fromUrl(url)
+      controller.update()
     }
   }
 
-  def configureDragAndDropFile(input: TextArea, renderer: JstackRenderer): Unit = {
+  def configureDragAndDropFile(input: TextArea, controller: JstackController): Unit = {
     input.addEventListener("dragenter", (e: Event) => {
       e.stopPropagation()
       e.preventDefault()
@@ -53,13 +52,12 @@ object JsMain {
       e.stopPropagation()
       e.preventDefault()
 
-      val reader = new FileReader()
-      reader.onload = (e: Event) => {
-        val contents = reader.result.asInstanceOf[String]
-        renderer.render(contents)
+      for {
+        contents <- FluentReader.readText(e.dataTransfer.files.item(0))
+      } {
+        input.value = contents
+        controller.update()
       }
-      val item = e.dataTransfer.files.item(0)
-      reader.readAsText(item)
     }, false)
   }
 
