@@ -1,0 +1,400 @@
+2011-11-18 09:24:20
+Full thread dump Java HotSpot(TM) 64-Bit Server VM (20.4-b02-402 mixed mode):
+
+"Attach Listener" daemon prio=9 tid=114ec2000 nid=0x1221fb000 waiting on condition [00000000]
+   java.lang.Thread.State: RUNNABLE
+
+"AWT-EventQueue-0" prio=6 tid=114aef000 nid=0x12aadf000 runnable [12aada000]
+   java.lang.Thread.State: RUNNABLE
+	at apple.awt.CInputMethod.getNativeLocale(Native Method)
+	at apple.awt.CToolkit.getDefaultKeyboardLocale(CToolkit.java:1043)
+	at sun.awt.im.ExecutableInputMethodManager.getDefaultKeyboardLocale(InputMethodManager.java:578)
+	at sun.awt.im.InputContext.<init>(InputContext.java:114)
+	at sun.awt.im.InputMethodContext.<init>(InputMethodContext.java:72)
+	at java.awt.im.InputContext.getInstance(InputContext.java:74)
+	at java.awt.Window.getInputContext(Window.java:1233)
+	- locked <7d4795570> (a java.lang.Object)
+	at java.awt.Component.getInputContext(Component.java:5893)
+	at java.awt.Component.getInputContext(Component.java:5893)
+	at java.awt.Component.getInputContext(Component.java:5893)
+	at java.awt.Component.getInputContext(Component.java:5893)
+	at java.awt.Component.getInputContext(Component.java:5893)
+	at java.awt.Component.getInputContext(Component.java:5893)
+	at java.awt.Component.getInputContext(Component.java:5893)
+	at java.awt.Component.getInputContext(Component.java:5893)
+	at java.awt.Component.getInputContext(Component.java:5893)
+	at java.awt.Component.getInputContext(Component.java:5893)
+	at java.awt.Component.getInputContext(Component.java:5893)
+	at java.awt.Component.getInputContext(Component.java:5893)
+	at java.awt.Component.getInputContext(Component.java:5893)
+	at java.awt.Component.getInputContext(Component.java:5893)
+	at java.awt.Component.getInputContext(Component.java:5893)
+	at java.awt.Component.getInputContext(Component.java:5893)
+	at java.awt.Component.getInputContext(Component.java:5893)
+	at java.awt.Component.getInputContext(Component.java:5893)
+	at java.awt.Component.removeNotify(Component.java:6862)
+	- locked <7d89d0ba0> (a java.awt.Component$AWTTreeLock)
+	at java.awt.Container.removeNotify(Container.java:2660)
+	- locked <7d89d0ba0> (a java.awt.Component$AWTTreeLock)
+	at javax.swing.JComponent.removeNotify(JComponent.java:4701)
+	at java.awt.Container.removeAll(Container.java:1224)
+	- locked <7d89d0ba0> (a java.awt.Component$AWTTreeLock)
+	at javax.swing.plaf.basic.BasicListUI.paintImpl(BasicListUI.java:307)
+	at javax.swing.plaf.basic.BasicListUI.paint(BasicListUI.java:222)
+	at javax.swing.plaf.ComponentUI.update(ComponentUI.java:153)
+	at javax.swing.JComponent.paintComponent(JComponent.java:752)
+	at javax.swing.JComponent.paint(JComponent.java:1029)
+	at javax.swing.JComponent.paintChildren(JComponent.java:862)
+	- locked <7d89d0ba0> (a java.awt.Component$AWTTreeLock)
+	at javax.swing.JComponent.paint(JComponent.java:1038)
+	at javax.swing.JViewport.paint(JViewport.java:766)
+	at javax.swing.JComponent.paintChildren(JComponent.java:862)
+	- locked <7d89d0ba0> (a java.awt.Component$AWTTreeLock)
+	at javax.swing.JComponent.paint(JComponent.java:1038)
+	at javax.swing.JComponent.paintChildren(JComponent.java:862)
+	- locked <7d89d0ba0> (a java.awt.Component$AWTTreeLock)
+	at javax.swing.JComponent.paint(JComponent.java:1038)
+	at javax.swing.JComponent.paintChildren(JComponent.java:862)
+	- locked <7d89d0ba0> (a java.awt.Component$AWTTreeLock)
+	at javax.swing.JComponent.paint(JComponent.java:1038)
+	at javax.swing.JComponent.paintChildren(JComponent.java:862)
+	- locked <7d89d0ba0> (a java.awt.Component$AWTTreeLock)
+	at javax.swing.JComponent.paint(JComponent.java:1038)
+	at javax.swing.JComponent.paintChildren(JComponent.java:862)
+	- locked <7d89d0ba0> (a java.awt.Component$AWTTreeLock)
+	at javax.swing.JComponent.paint(JComponent.java:1038)
+	at javax.swing.JComponent.paintChildren(JComponent.java:862)
+	- locked <7d89d0ba0> (a java.awt.Component$AWTTreeLock)
+	at javax.swing.JComponent.paint(JComponent.java:1038)
+	at javax.swing.JComponent.paintChildren(JComponent.java:862)
+	- locked <7d89d0ba0> (a java.awt.Component$AWTTreeLock)
+	at javax.swing.JComponent.paint(JComponent.java:1038)
+	at javax.swing.JComponent.paintChildren(JComponent.java:862)
+	- locked <7d89d0ba0> (a java.awt.Component$AWTTreeLock)
+	at javax.swing.JComponent.paint(JComponent.java:1038)
+	at javax.swing.JComponent.paintChildren(JComponent.java:862)
+	- locked <7d89d0ba0> (a java.awt.Component$AWTTreeLock)
+	at javax.swing.JComponent.paint(JComponent.java:1038)
+	at javax.swing.JComponent.paintChildren(JComponent.java:862)
+	- locked <7d89d0ba0> (a java.awt.Component$AWTTreeLock)
+	at javax.swing.JComponent.paint(JComponent.java:1038)
+	at javax.swing.JComponent.paintChildren(JComponent.java:862)
+	- locked <7d89d0ba0> (a java.awt.Component$AWTTreeLock)
+	at javax.swing.JComponent.paint(JComponent.java:1038)
+	at javax.swing.JComponent.paintChildren(JComponent.java:862)
+	- locked <7d89d0ba0> (a java.awt.Component$AWTTreeLock)
+	at javax.swing.JComponent.paint(JComponent.java:1038)
+	at javax.swing.JLayeredPane.paint(JLayeredPane.java:567)
+	at javax.swing.JComponent.paintChildren(JComponent.java:862)
+	- locked <7d89d0ba0> (a java.awt.Component$AWTTreeLock)
+	at javax.swing.JComponent.paint(JComponent.java:1038)
+	at javax.swing.JComponent._paintImmediately(JComponent.java:5098)
+	at javax.swing.JComponent.paintImmediately(JComponent.java:4882)
+	at javax.swing.RepaintManager.paintDirtyRegions(RepaintManager.java:812)
+	at javax.swing.RepaintManager.paintDirtyRegions(RepaintManager.java:714)
+	at javax.swing.RepaintManager.prePaintDirtyRegions(RepaintManager.java:694)
+	at javax.swing.RepaintManager.access$700(RepaintManager.java:41)
+	at javax.swing.RepaintManager$ProcessingRunnable.run(RepaintManager.java:1672)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:209)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:677)
+	at java.awt.EventQueue.access$000(EventQueue.java:85)
+	at java.awt.EventQueue$1.run(EventQueue.java:638)
+	at java.awt.EventQueue$1.run(EventQueue.java:636)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:87)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:647)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:296)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:211)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:196)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:188)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:122)
+
+"AWT-Shutdown" prio=6 tid=115d27000 nid=0x12a9dc000 in Object.wait() [12a9db000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <7d89a0db8> (a java.lang.Object)
+	at java.lang.Object.wait(Object.java:485)
+	at sun.awt.AWTAutoShutdown.run(AWTAutoShutdown.java:265)
+	- locked <7d89a0db8> (a java.lang.Object)
+	at java.lang.Thread.run(Thread.java:680)
+
+"KNIME-WFM-Parent-Notifier" prio=6 tid=11490e000 nid=0x12a58e000 waiting on condition [12a58d000]
+   java.lang.Thread.State: WAITING (parking)
+	at sun.misc.Unsafe.park(Native Method)
+	- parking to wait for  <7d8ecc660> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+	at java.util.concurrent.locks.LockSupport.park(LockSupport.java:156)
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:1987)
+	at java.util.concurrent.ArrayBlockingQueue.take(ArrayBlockingQueue.java:317)
+	at java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:947)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:907)
+	at java.lang.Thread.run(Thread.java:680)
+
+"KNIME Sync Exec Dispatcher-1" daemon prio=6 tid=115b24000 nid=0x12a48b000 waiting on condition [12a48a000]
+   java.lang.Thread.State: WAITING (parking)
+	at sun.misc.Unsafe.park(Native Method)
+	- parking to wait for  <7d5311678> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+	at java.util.concurrent.locks.LockSupport.park(LockSupport.java:156)
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:1987)
+	at java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:399)
+	at java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:947)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:907)
+	at java.lang.Thread.run(Thread.java:680)
+
+"KNIME-Workflow-Notifier" daemon prio=1 tid=11dc2d800 nid=0x12a388000 waiting on condition [12a387000]
+   java.lang.Thread.State: WAITING (parking)
+	at sun.misc.Unsafe.park(Native Method)
+	- parking to wait for  <7d8ecc768> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+	at java.util.concurrent.locks.LockSupport.park(LockSupport.java:156)
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:1987)
+	at java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:399)
+	at java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:947)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:907)
+	at java.lang.Thread.run(Thread.java:680)
+
+"TimerQueue" daemon prio=5 tid=1156ea000 nid=0x128c09000 in Object.wait() [128c08000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <7d9ef6538> (a javax.swing.TimerQueue)
+	at javax.swing.TimerQueue.run(TimerQueue.java:232)
+	- locked <7d9ef6538> (a javax.swing.TimerQueue)
+	at java.lang.Thread.run(Thread.java:680)
+
+"570453723@qtp-433600990-1 - Acceptor0 SelectChannelConnector@192.168.11.204:51176" prio=5 tid=114afe000 nid=0x128803000 runnable [128802000]
+   java.lang.Thread.State: RUNNABLE
+	at sun.nio.ch.KQueueArrayWrapper.kevent0(Native Method)
+	at sun.nio.ch.KQueueArrayWrapper.poll(KQueueArrayWrapper.java:136)
+	at sun.nio.ch.KQueueSelectorImpl.doSelect(KQueueSelectorImpl.java:69)
+	at sun.nio.ch.SelectorImpl.lockAndDoSelect(SelectorImpl.java:69)
+	- locked <7d9c05d68> (a sun.nio.ch.Util$2)
+	- locked <7d9c05d80> (a java.util.Collections$UnmodifiableSet)
+	- locked <7d9bdab80> (a sun.nio.ch.KQueueSelectorImpl)
+	at sun.nio.ch.SelectorImpl.select(SelectorImpl.java:80)
+	at org.mortbay.io.nio.SelectorManager$SelectSet.doSelect(SelectorManager.java:484)
+	at org.mortbay.io.nio.SelectorManager.doSelect(SelectorManager.java:191)
+	at org.mortbay.jetty.nio.SelectChannelConnector.accept(SelectChannelConnector.java:124)
+	at org.mortbay.jetty.AbstractConnector$Acceptor.run(AbstractConnector.java:707)
+	at org.mortbay.thread.QueuedThreadPool$PoolThread.run(QueuedThreadPool.java:582)
+
+"346361505@qtp-433600990-0" prio=5 tid=114e2e800 nid=0x125f04000 in Object.wait() [125f03000]
+   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <7d9bde240> (a org.mortbay.thread.QueuedThreadPool$PoolThread)
+	at org.mortbay.thread.QueuedThreadPool$PoolThread.run(QueuedThreadPool.java:626)
+	- locked <7d9bde240> (a org.mortbay.thread.QueuedThreadPool$PoolThread)
+
+"Worker-3" prio=5 tid=115512800 nid=0x124e6a000 in Object.wait() [124e69000]
+   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <7d8341250> (a org.eclipse.core.internal.jobs.WorkerPool)
+	at org.eclipse.core.internal.jobs.WorkerPool.sleep(WorkerPool.java:185)
+	- locked <7d8341250> (a org.eclipse.core.internal.jobs.WorkerPool)
+	at org.eclipse.core.internal.jobs.WorkerPool.startJob(WorkerPool.java:217)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:50)
+
+"Java indexing" daemon prio=4 tid=114b05000 nid=0x124b00000 in Object.wait() [124aff000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <7d97f1e30> (a org.eclipse.jdt.internal.core.search.indexing.IndexManager)
+	at java.lang.Object.wait(Object.java:485)
+	at org.eclipse.jdt.internal.core.search.processing.JobManager.run(JobManager.java:381)
+	- locked <7d97f1e30> (a org.eclipse.jdt.internal.core.search.indexing.IndexManager)
+	at java.lang.Thread.run(Thread.java:680)
+
+"Unknown Progress Timer" prio=6 tid=11dd5c800 nid=0x124839000 in Object.wait() [124838000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <7d9639c68> (a org.knime.workbench.editor2.figures.ProgressFigure$UnknownProgressTimer)
+	at java.lang.Object.wait(Object.java:485)
+	at org.knime.workbench.editor2.figures.ProgressFigure$UnknownProgressTimer.run(ProgressFigure.java:640)
+	- locked <7d9639c68> (a org.knime.workbench.editor2.figures.ProgressFigure$UnknownProgressTimer)
+
+"[ThreadPool Manager] - Idle Thread" daemon prio=5 tid=1152a5000 nid=0x124736000 in Object.wait() [124735000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <7d9322bc8> (a org.eclipse.equinox.internal.util.impl.tpt.threadpool.Executor)
+	at java.lang.Object.wait(Object.java:485)
+	at org.eclipse.equinox.internal.util.impl.tpt.threadpool.Executor.run(Executor.java:106)
+	- locked <7d9322bc8> (a org.eclipse.equinox.internal.util.impl.tpt.threadpool.Executor)
+
+"KNIME Progress Timer" daemon prio=6 tid=115103000 nid=0x12334e000 in Object.wait() [12334d000]
+   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <7d8e7b4d0> (a java.util.TaskQueue)
+	at java.util.TimerThread.mainLoop(Timer.java:509)
+	- locked <7d8e7b4d0> (a java.util.TaskQueue)
+	at java.util.TimerThread.run(Timer.java:462)
+
+"Java2D Disposer" daemon prio=10 tid=115108800 nid=0x122a84000 in Object.wait() [122a83000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <7d8aaf3c0> (a java.lang.ref.ReferenceQueue$Lock)
+	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:118)
+	- locked <7d8aaf3c0> (a java.lang.ref.ReferenceQueue$Lock)
+	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:134)
+	at sun.java2d.Disposer.run(Disposer.java:127)
+	at java.lang.Thread.run(Thread.java:680)
+
+"Bundle File Closer" daemon prio=6 tid=11d8a9000 nid=0x122981000 in Object.wait() [122980000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <7d87f8a20> (a org.eclipse.osgi.framework.eventmgr.EventManager$EventThread)
+	at java.lang.Object.wait(Object.java:485)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.getNextEvent(EventManager.java:397)
+	- locked <7d87f8a20> (a org.eclipse.osgi.framework.eventmgr.EventManager$EventThread)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:333)
+
+"Worker-0" prio=5 tid=115a8d000 nid=0x1214c0000 in Object.wait() [1214bf000]
+   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <7d8341250> (a org.eclipse.core.internal.jobs.WorkerPool)
+	at org.eclipse.core.internal.jobs.WorkerPool.sleep(WorkerPool.java:185)
+	- locked <7d8341250> (a org.eclipse.core.internal.jobs.WorkerPool)
+	at org.eclipse.core.internal.jobs.WorkerPool.startJob(WorkerPool.java:217)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:50)
+
+"Worker-JM" prio=5 tid=11d83b000 nid=0x120c45000 in Object.wait() [120c44000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <7d82db068> (a java.util.ArrayList)
+	at org.eclipse.core.internal.jobs.InternalWorker.run(InternalWorker.java:58)
+	- locked <7d82db068> (a java.util.ArrayList)
+
+"[Timer] - Main Queue Handler" daemon prio=5 tid=1149e5000 nid=0x120b36000 in Object.wait() [120b35000]
+   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <7d82db080> (a java.lang.Object)
+	at org.eclipse.equinox.internal.util.impl.tpt.timer.TimerImpl.run(TimerImpl.java:141)
+	- locked <7d82db080> (a java.lang.Object)
+	at java.lang.Thread.run(Thread.java:680)
+
+"Framework Event Dispatcher" daemon prio=5 tid=11d839800 nid=0x120929000 in Object.wait() [120928000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <7d82f5788> (a org.eclipse.osgi.framework.eventmgr.EventManager$EventThread)
+	at java.lang.Object.wait(Object.java:485)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.getNextEvent(EventManager.java:397)
+	- locked <7d82f5788> (a org.eclipse.osgi.framework.eventmgr.EventManager$EventThread)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:333)
+
+"Start Level Event Dispatcher" daemon prio=5 tid=1150ba800 nid=0x120826000 in Object.wait() [120825000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <7d82f5808> (a org.eclipse.osgi.framework.eventmgr.EventManager$EventThread)
+	at java.lang.Object.wait(Object.java:485)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.getNextEvent(EventManager.java:397)
+	- locked <7d82f5808> (a org.eclipse.osgi.framework.eventmgr.EventManager$EventThread)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:333)
+
+"State Data Manager" daemon prio=5 tid=114a99000 nid=0x120723000 waiting on condition [120722000]
+   java.lang.Thread.State: TIMED_WAITING (sleeping)
+	at java.lang.Thread.sleep(Native Method)
+	at org.eclipse.osgi.internal.baseadaptor.StateManager.run(StateManager.java:319)
+	at java.lang.Thread.run(Thread.java:680)
+
+"Poller SunPKCS11-Darwin" daemon prio=1 tid=11584c000 nid=0x11e816000 waiting on condition [11e815000]
+   java.lang.Thread.State: TIMED_WAITING (sleeping)
+	at java.lang.Thread.sleep(Native Method)
+	at sun.security.pkcs11.SunPKCS11$TokenPoller.run(SunPKCS11.java:692)
+	at java.lang.Thread.run(Thread.java:680)
+
+"Low Memory Detector" daemon prio=5 tid=115813800 nid=0x11e610000 runnable [00000000]
+   java.lang.Thread.State: RUNNABLE
+
+"C2 CompilerThread1" daemon prio=9 tid=1148d4000 nid=0x11e50d000 waiting on condition [00000000]
+   java.lang.Thread.State: RUNNABLE
+
+"C2 CompilerThread0" daemon prio=9 tid=1148d3800 nid=0x11e40a000 waiting on condition [00000000]
+   java.lang.Thread.State: RUNNABLE
+
+"Signal Dispatcher" daemon prio=9 tid=1148d2800 nid=0x11e307000 runnable [00000000]
+   java.lang.Thread.State: RUNNABLE
+
+"Surrogate Locker Thread (Concurrent GC)" daemon prio=5 tid=1148d1800 nid=0x11e204000 waiting on condition [00000000]
+   java.lang.Thread.State: RUNNABLE
+
+"Finalizer" daemon prio=8 tid=115001800 nid=0x11e101000 in Object.wait() [11e100000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <7d802cda0> (a java.lang.ref.ReferenceQueue$Lock)
+	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:118)
+	- locked <7d802cda0> (a java.lang.ref.ReferenceQueue$Lock)
+	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:134)
+	at java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:159)
+
+"Reference Handler" daemon prio=10 tid=115000800 nid=0x11d704000 in Object.wait() [11d703000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <7d802cdb8> (a java.lang.ref.Reference$Lock)
+	at java.lang.Object.wait(Object.java:485)
+	at java.lang.ref.Reference$ReferenceHandler.run(Reference.java:116)
+	- locked <7d802cdb8> (a java.lang.ref.Reference$Lock)
+
+"main" prio=6 tid=115800800 nid=0x7fff71034cc0 waiting for monitor entry [7fff5fbfd000]
+   java.lang.Thread.State: BLOCKED (on object monitor)
+	at java.awt.BorderLayout.layoutContainer(BorderLayout.java:787)
+	- waiting to lock <7d89d0ba0> (a java.awt.Component$AWTTreeLock)
+	at java.awt.Container.layout(Container.java:1421)
+	at java.awt.Container.doLayout(Container.java:1410)
+	at org.knime.workbench.ui.wrapper.WrappedNodeDialog.getInitialSize(WrappedNodeDialog.java:601)
+	at org.eclipse.jface.window.Window.initializeBounds(Window.java:764)
+	at org.eclipse.jface.dialogs.Dialog.initializeBounds(Dialog.java:714)
+	at org.eclipse.jface.window.Window.create(Window.java:435)
+	at org.eclipse.jface.dialogs.Dialog.create(Dialog.java:1089)
+	at org.knime.workbench.ui.wrapper.WrappedNodeDialog.create(WrappedNodeDialog.java:274)
+	at org.eclipse.jface.window.Window.open(Window.java:790)
+	at org.knime.workbench.ui.wrapper.WrappedNodeDialog.open(WrappedNodeDialog.java:155)
+	at org.knime.workbench.editor2.editparts.NodeContainerEditPart.openDialog(NodeContainerEditPart.java:700)
+	at org.knime.workbench.editor2.editparts.NodeContainerEditPart.performRequest(NodeContainerEditPart.java:308)
+	at org.eclipse.gef.tools.SelectEditPartTracker.performOpen(SelectEditPartTracker.java:194)
+	at org.eclipse.gef.tools.SelectEditPartTracker.handleDoubleClick(SelectEditPartTracker.java:137)
+	at org.eclipse.gef.tools.AbstractTool.mouseDoubleClick(AbstractTool.java:1069)
+	at org.eclipse.gef.tools.SelectionTool.mouseDoubleClick(SelectionTool.java:525)
+	at org.eclipse.gef.EditDomain.mouseDoubleClick(EditDomain.java:231)
+	at org.eclipse.gef.ui.parts.DomainEventDispatcher.dispatchMouseDoubleClicked(DomainEventDispatcher.java:291)
+	at org.eclipse.draw2d.LightweightSystem$EventHandler.mouseDoubleClick(LightweightSystem.java:518)
+	at org.eclipse.swt.widgets.TypedListener.handleEvent(TypedListener.java:189)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:84)
+	at org.eclipse.swt.widgets.Display.sendEvent(Display.java:3776)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1367)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1390)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1375)
+	at org.eclipse.swt.widgets.Widget.notifyListeners(Widget.java:1187)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3622)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3277)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2640)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2604)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2438)
+	at org.eclipse.ui.internal.Workbench$7.run(Workbench.java:671)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:332)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:664)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at org.knime.product.rcp.KNIMEApplication.start(KNIMEApplication.java:95)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:196)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:110)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:79)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:369)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:179)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:619)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:574)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1407)
+
+"VM Thread" prio=9 tid=1148cd000 nid=0x11d601000 runnable
+
+"Gang worker#0 (Parallel GC Threads)" prio=9 tid=115802000 nid=0x119102000 runnable
+
+"Gang worker#1 (Parallel GC Threads)" prio=9 tid=114800800 nid=0x119205000 runnable
+
+"Gang worker#2 (Parallel GC Threads)" prio=9 tid=114801000 nid=0x119308000 runnable
+
+"Gang worker#3 (Parallel GC Threads)" prio=9 tid=114802000 nid=0x11940b000 runnable
+
+"Concurrent Mark-Sweep GC Thread" prio=9 tid=11487d000 nid=0x11d151000 runnable
+"VM Periodic Task Thread" prio=10 tid=115825000 nid=0x11e713000 waiting on condition
+
+"Exception Catcher Thread" prio=10 tid=115801800 nid=0x1147f9000 runnable
+JNI global references: 3802

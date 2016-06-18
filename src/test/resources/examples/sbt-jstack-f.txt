@@ -1,0 +1,156 @@
+Attaching to process ID 57592, please wait...
+Debugger attached successfully.
+Server compiler detected.
+JVM version is 25.60-b23
+Deadlock Detection:
+
+No deadlocks found.
+
+Thread 16711: (state = BLOCKED)
+
+
+Thread 22279: (state = BLOCKED)
+ - sun.misc.Unsafe.park(boolean, long) @bci=0 (Compiled frame; information may be imprecise)
+ - scala.concurrent.forkjoin.ForkJoinPool.scan(scala.concurrent.forkjoin.ForkJoinPool$WorkQueue) @bci=525, line=2075 (Compiled frame)
+ - scala.concurrent.forkjoin.ForkJoinPool.runWorker(scala.concurrent.forkjoin.ForkJoinPool$WorkQueue) @bci=8, line=1979 (Interpreted frame)
+ - scala.concurrent.forkjoin.ForkJoinWorkerThread.run() @bci=14, line=107 (Interpreted frame)
+
+
+Thread 25631: (state = BLOCKED)
+ - sun.misc.Unsafe.park(boolean, long) @bci=0 (Compiled frame; information may be imprecise)
+ - scala.concurrent.forkjoin.ForkJoinPool.scan(scala.concurrent.forkjoin.ForkJoinPool$WorkQueue) @bci=525, line=2075 (Compiled frame)
+ - scala.concurrent.forkjoin.ForkJoinPool.runWorker(scala.concurrent.forkjoin.ForkJoinPool$WorkQueue) @bci=8, line=1979 (Interpreted frame)
+ - scala.concurrent.forkjoin.ForkJoinWorkerThread.run() @bci=14, line=107 (Interpreted frame)
+
+
+Thread 26131: (state = IN_NATIVE)
+ - sun.nio.ch.KQueueArrayWrapper.kevent0(int, long, int, long) @bci=0 (Interpreted frame)
+ - sun.nio.ch.KQueueArrayWrapper.poll(long) @bci=17, line=198 (Interpreted frame)
+ - sun.nio.ch.KQueueSelectorImpl.doSelect(long) @bci=30, line=103 (Interpreted frame)
+ - sun.nio.ch.SelectorImpl.lockAndDoSelect(long) @bci=37, line=86 (Interpreted frame)
+ - sun.nio.ch.SelectorImpl.select(long) @bci=30, line=97 (Interpreted frame)
+ - sun.nio.ch.SelectorImpl.select() @bci=2, line=101 (Interpreted frame)
+ - akka.io.SelectionHandler$ChannelRegistryImpl$$anon$3.tryRun() @bci=7, line=114 (Interpreted frame)
+ - akka.io.SelectionHandler$ChannelRegistryImpl$Task.run() @bci=1, line=215 (Interpreted frame)
+ - akka.io.SelectionHandler$ChannelRegistryImpl$$anon$3.run() @bci=14, line=147 (Interpreted frame)
+ - akka.util.SerializedSuspendableExecutionContext.run$1(int) @bci=106, line=68 (Interpreted frame)
+ - akka.util.SerializedSuspendableExecutionContext.run() @bci=2, line=72 (Interpreted frame)
+ - akka.dispatch.TaskInvocation.run() @bci=4, line=41 (Interpreted frame)
+ - java.util.concurrent.ThreadPoolExecutor.runWorker(java.util.concurrent.ThreadPoolExecutor$Worker) @bci=95, line=1142 (Interpreted frame)
+ - java.util.concurrent.ThreadPoolExecutor$Worker.run() @bci=5, line=617 (Interpreted frame)
+ - java.lang.Thread.run() @bci=11, line=745 (Interpreted frame)
+
+
+Thread 29955: (state = BLOCKED)
+ - sun.misc.Unsafe.park(boolean, long) @bci=0 (Compiled frame; information may be imprecise)
+ - scala.concurrent.forkjoin.ForkJoinPool.scan(scala.concurrent.forkjoin.ForkJoinPool$WorkQueue) @bci=525, line=2075 (Interpreted frame)
+ - scala.concurrent.forkjoin.ForkJoinPool.runWorker(scala.concurrent.forkjoin.ForkJoinPool$WorkQueue) @bci=8, line=1979 (Interpreted frame)
+ - scala.concurrent.forkjoin.ForkJoinWorkerThread.run() @bci=14, line=107 (Interpreted frame)
+
+
+Thread 29443: (state = BLOCKED)
+ - sun.misc.Unsafe.park(boolean, long) @bci=0 (Compiled frame; information may be imprecise)
+ - scala.concurrent.forkjoin.ForkJoinPool.scan(scala.concurrent.forkjoin.ForkJoinPool$WorkQueue) @bci=525, line=2075 (Compiled frame)
+ - scala.concurrent.forkjoin.ForkJoinPool.runWorker(scala.concurrent.forkjoin.ForkJoinPool$WorkQueue) @bci=8, line=1979 (Interpreted frame)
+ - scala.concurrent.forkjoin.ForkJoinWorkerThread.run() @bci=14, line=107 (Interpreted frame)
+
+
+Thread 28931: (state = BLOCKED)
+ - sun.misc.Unsafe.park(boolean, long) @bci=0 (Compiled frame; information may be imprecise)
+ - scala.concurrent.forkjoin.ForkJoinPool.scan(scala.concurrent.forkjoin.ForkJoinPool$WorkQueue) @bci=525, line=2075 (Interpreted frame)
+ - scala.concurrent.forkjoin.ForkJoinPool.runWorker(scala.concurrent.forkjoin.ForkJoinPool$WorkQueue) @bci=8, line=1979 (Interpreted frame)
+ - scala.concurrent.forkjoin.ForkJoinWorkerThread.run() @bci=14, line=107 (Interpreted frame)
+
+
+Thread 28431: (state = BLOCKED)
+ - sun.misc.Unsafe.park(boolean, long) @bci=0 (Compiled frame; information may be imprecise)
+ - scala.concurrent.forkjoin.ForkJoinPool.idleAwaitWork(scala.concurrent.forkjoin.ForkJoinPool$WorkQueue, long, long) @bci=129, line=2135 (Compiled frame)
+ - scala.concurrent.forkjoin.ForkJoinPool.scan(scala.concurrent.forkjoin.ForkJoinPool$WorkQueue) @bci=463, line=2067 (Compiled frame)
+ - scala.concurrent.forkjoin.ForkJoinPool.runWorker(scala.concurrent.forkjoin.ForkJoinPool$WorkQueue) @bci=8, line=1979 (Interpreted frame)
+ - scala.concurrent.forkjoin.ForkJoinWorkerThread.run() @bci=14, line=107 (Interpreted frame)
+
+
+Thread 22795: (state = BLOCKED)
+ - java.lang.Thread.sleep(long) @bci=0 (Compiled frame; information may be imprecise)
+ - akka.actor.LightArrayRevolverScheduler.waitNanos(long) @bci=36, line=226 (Compiled frame)
+ - akka.actor.LightArrayRevolverScheduler$$anon$8.nextTick() @bci=51, line=405 (Compiled frame)
+ - akka.actor.LightArrayRevolverScheduler$$anon$8.run() @bci=1, line=375 (Interpreted frame)
+ - java.lang.Thread.run() @bci=11, line=745 (Interpreted frame)
+
+
+Thread 15887: (state = BLOCKED)
+
+
+Thread 14339: (state = BLOCKED)
+ - java.lang.Object.wait(long) @bci=0 (Compiled frame; information may be imprecise)
+ - java.lang.ref.ReferenceQueue.remove(long) @bci=59, line=143 (Compiled frame)
+ - java.lang.ref.ReferenceQueue.remove() @bci=2, line=164 (Compiled frame)
+ - java.lang.ref.Finalizer$FinalizerThread.run() @bci=36, line=209 (Interpreted frame)
+
+
+Thread 13827: (state = BLOCKED)
+ - java.lang.Object.wait(long) @bci=0 (Compiled frame; information may be imprecise)
+ - java.lang.Object.wait() @bci=2, line=502 (Interpreted frame)
+ - java.lang.ref.Reference$ReferenceHandler.run() @bci=36, line=157 (Interpreted frame)
+
+
+Thread 5891: (state = IN_NATIVE)
+ - java.io.FileInputStream.read0() @bci=0 (Interpreted frame)
+ - java.io.FileInputStream.read() @bci=1, line=207 (Interpreted frame)
+ - jline.internal.NonBlockingInputStream.read(byte[], int, int) @bci=63, line=245 (Interpreted frame)
+ - jline.internal.InputStreamReader.read(char[], int, int) @bci=177, line=257 (Interpreted frame)
+ - jline.internal.InputStreamReader.read() @bci=32, line=194 (Interpreted frame)
+ - jline.console.ConsoleReader.readCharacter(boolean) @bci=4, line=2136 (Interpreted frame)
+ - jline.console.ConsoleReader.readCharacter() @bci=2, line=2126 (Interpreted frame)
+ - jline.console.ConsoleReader.readBinding(jline.console.KeyMap) @bci=19, line=2211 (Interpreted frame)
+ - jline.console.ConsoleReader.readLine(java.lang.String, java.lang.Character, java.lang.String) @bci=238, line=2460 (Interpreted frame)
+ - jline.console.ConsoleReader.readLine(java.lang.String, java.lang.Character) @bci=4, line=2372 (Interpreted frame)
+ - jline.console.ConsoleReader.readLine(java.lang.String) @bci=3, line=2360 (Interpreted frame)
+ - sbt.JLine.sbt$JLine$$readLineDirectRaw(java.lang.String, scala.Option) @bci=88, line=42 (Interpreted frame)
+ - sbt.JLine$$anonfun$readLineDirect$2.apply() @bci=12, line=34 (Interpreted frame)
+ - sbt.JLine$$anonfun$readLineDirect$2.apply() @bci=1, line=34 (Interpreted frame)
+ - sbt.Signals0.withHandler(java.lang.String, scala.Function0, scala.Function0) @bci=37, line=81 (Interpreted frame)
+ - sbt.Signals$.withHandler(scala.Function0, java.lang.String, scala.Function0) @bci=14, line=11 (Interpreted frame)
+ - sbt.JLine.readLineDirect(java.lang.String, scala.Option) @bci=34, line=34 (Interpreted frame)
+ - sbt.JLine.readLineWithHistory(java.lang.String, scala.Option) @bci=24, line=27 (Interpreted frame)
+ - sbt.JLine.sbt$JLine$$unsynchronizedReadLine(java.lang.String, scala.Option) @bci=3, line=19 (Interpreted frame)
+ - sbt.JLine$$anonfun$readLine$1.apply() @bci=12, line=16 (Interpreted frame)
+ - sbt.JLine$$anonfun$readLine$1.apply() @bci=1, line=16 (Interpreted frame)
+ - sbt.JLine$$anonfun$withJLine$1.apply(jline.Terminal) @bci=10, line=114 (Interpreted frame)
+ - sbt.JLine$$anonfun$withJLine$1.apply(java.lang.Object) @bci=5, line=112 (Interpreted frame)
+ - sbt.JLine$.withTerminal(scala.Function1) @bci=11, line=86 (Interpreted frame)
+ - sbt.JLine$.withJLine(scala.Function0) @bci=9, line=112 (Interpreted frame)
+ - sbt.JLine.readLine(java.lang.String, scala.Option) @bci=13, line=16 (Interpreted frame)
+ - sbt.BasicCommands$$anonfun$shell$1.apply(sbt.State) @bci=158, line=174 (Interpreted frame)
+ - sbt.BasicCommands$$anonfun$shell$1.apply(java.lang.Object) @bci=5, line=170 (Interpreted frame)
+ - sbt.Command$$anonfun$command$1$$anonfun$apply$1.apply() @bci=11, line=30 (Interpreted frame)
+ - sbt.Command$$anonfun$command$1$$anonfun$apply$1.apply() @bci=1, line=30 (Interpreted frame)
+ - sbt.Command$.process(java.lang.String, sbt.State) @bci=55, line=93 (Interpreted frame)
+ - sbt.MainLoop$$anonfun$1$$anonfun$apply$1.apply(java.lang.String, sbt.State) @bci=5, line=96 (Interpreted frame)
+ - sbt.MainLoop$$anonfun$1$$anonfun$apply$1.apply(java.lang.Object, java.lang.Object) @bci=9, line=96 (Interpreted frame)
+ - sbt.State$$anon$1.process(scala.Function2) @bci=270, line=184 (Interpreted frame)
+ - sbt.MainLoop$$anonfun$1.apply() @bci=18, line=96 (Interpreted frame)
+ - sbt.MainLoop$$anonfun$1.apply() @bci=1, line=96 (Interpreted frame)
+ - sbt.ErrorHandling$.wideConvert(scala.Function0) @bci=7, line=17 (Interpreted frame)
+ - sbt.MainLoop$.next(sbt.State) @bci=17, line=96 (Interpreted frame)
+ - sbt.MainLoop$.run(sbt.State) @bci=34, line=89 (Interpreted frame)
+ - sbt.MainLoop$$anonfun$runWithNewLog$1.apply(java.io.BufferedWriter) @bci=151, line=68 (Interpreted frame)
+ - sbt.MainLoop$$anonfun$runWithNewLog$1.apply(java.lang.Object) @bci=5, line=63 (Interpreted frame)
+ - sbt.Using.apply(java.lang.Object, scala.Function1) @bci=8, line=24 (Interpreted frame)
+ - sbt.MainLoop$.runWithNewLog(sbt.State, sbt.GlobalLogBacking) @bci=35, line=63 (Interpreted frame)
+ - sbt.MainLoop$.runAndClearLast(sbt.State, sbt.GlobalLogBacking) @bci=3, line=46 (Interpreted frame)
+ - sbt.MainLoop$.runLoggedLoop(sbt.State, sbt.GlobalLogBacking) @bci=3, line=30 (Interpreted frame)
+ - sbt.MainLoop$.runLogged(sbt.State) @bci=31, line=22 (Interpreted frame)
+ - sbt.StandardMain$.runManaged(sbt.State) @bci=11, line=54 (Interpreted frame)
+ - sbt.xMain.run(xsbti.AppConfiguration) @bci=100, line=29 (Interpreted frame)
+ - xsbt.boot.Launch$$anonfun$run$1.apply() @bci=10, line=109 (Interpreted frame)
+ - xsbt.boot.Launch$.withContextLoader(java.lang.ClassLoader, scala.Function0) @bci=15, line=128 (Interpreted frame)
+ - xsbt.boot.Launch$.run(xsbti.Launcher, xsbt.boot.RunConfiguration) @bci=97, line=109 (Interpreted frame)
+ - xsbt.boot.Launch$$anonfun$apply$1.apply(java.lang.Object) @bci=16, line=35 (Interpreted frame)
+ - xsbt.boot.Launch$.launch(scala.Function1, xsbt.boot.RunConfiguration) @bci=2, line=117 (Interpreted frame)
+ - xsbt.boot.Launch$.apply(xsbt.boot.LauncherArguments) @bci=876, line=18 (Interpreted frame)
+ - xsbt.boot.Boot$.runImpl(xsbt.boot.LauncherArguments) @bci=4, line=41 (Interpreted frame)
+ - xsbt.boot.Boot$.main(java.lang.String[]) @bci=291, line=17 (Interpreted frame)
+ - xsbt.boot.Boot.main(java.lang.String[]) @bci=4 (Interpreted frame)
+
+
