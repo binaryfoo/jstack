@@ -6,6 +6,6 @@ Used hunting performance troubles.
 
 ### Screenshot
 
-Example from [go-log-12.txt](https://raw.githubusercontent.com/wcurrie/gocd-support/master/src/test/resources/go-log-12.txt)
+Example from [go-log-12.txt](https://raw.githubusercontent.com/binaryfoo/jstack/master/src/test/resources/go-log-12.txt)
 
 ![Screenshot](screenshot.png "Example from go-log-12.txt")

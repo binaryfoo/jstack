@@ -1,11 +1,14 @@
 import com.lihaoyi.workbench.Plugin._
 import com.typesafe.sbt.site.util.SiteHelpers
+import JsProductionize._
 
 enablePlugins(ScalaJSPlugin)
 
 workbenchSettings
 
-name := "gocd-support"
+JsProductionize.settings
+
+name := "jstack"
 
 version := "0.1-SNAPSHOT"
 
@@ -23,9 +26,11 @@ skip in packageJSDependencies := false
 
 scalaJSUseRhino in Global := false
 
-bootSnippet := "jstack.JsMain().main(document, window.location.search);"
-
 updateBrowsers <<= updateBrowsers.triggeredBy(fastOptJS in Compile)
+
+mangleIndexHtml <<= mangleIndexHtml.triggeredBy(fullOptJS in Compile)
+
+bootSnippet := "jstack.JsMain().main(document, window.location.search);"
 
 siteMappings ++= SiteHelpers.selectSubpaths(crossTarget.value / "classes", "*.html" | "*.css" | "*.js")
 
