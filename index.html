@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Stack Tracing</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css'>
+    <link rel="stylesheet" href="report.css">
+    <script src="https://code.jquery.com/jquery-1.12.0.js"></script>
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.js'></script>
+    <!--<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'></script>-->
+</head>
+<body>
+
+<div class="container">
+    <form id="stackForm">
+        <div class="form-group">
+            <label for="stackInput">Stack Trace</label>
+            <textarea class="form-control" name="stackInput" id="stackInput" cols="80" rows="1" placeholder="Paste jstack output, URL or drop a file"></textarea>
+        </div>
+        <label for="viewType">View</label>
+        <select name="viewType" id="viewType">
+            <option value="byStack" selected>Group by stack trace</option>
+            <option value="contention">Group lock contention</option>
+            <option value="raw">Raw</option>
+        </select>
+    </form>
+    <div id="output"></div>
+</div>
+
+<script type="text/javascript" src="../gocd-support-fastopt.js"></script>
+<!--<script type="text/javascript" src="../gocd-support-opt.js"></script>-->
+<script src="report.js"></script>
+<script type="text/javascript" src="/workbench.js"></script>
+<script>
+    jstack.JsMain().main(document, window.location.search);
+</script>
+</body>
+</html>
