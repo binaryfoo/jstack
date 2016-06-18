@@ -1,4 +1,5 @@
 import com.lihaoyi.workbench.Plugin._
+import com.typesafe.sbt.site.util.SiteHelpers
 
 enablePlugins(ScalaJSPlugin)
 
@@ -25,3 +26,7 @@ scalaJSUseRhino in Global := false
 bootSnippet := "jstack.JsMain().main(document, window.location.search);"
 
 updateBrowsers <<= updateBrowsers.triggeredBy(fastOptJS in Compile)
+
+siteMappings ++= SiteHelpers.selectSubpaths(crossTarget.value / "classes", "*.html" | "*.css" | "*.js")
+
+siteMappings ++= SiteHelpers.selectSubpaths(crossTarget.value, "*.js" | "js.map")
