@@ -30,3 +30,7 @@ updateBrowsers <<= updateBrowsers.triggeredBy(fastOptJS in Compile)
 siteMappings ++= SiteHelpers.selectSubpaths(crossTarget.value / "classes", "*.html" | "*.css" | "*.js")
 
 siteMappings ++= SiteHelpers.selectSubpaths(crossTarget.value, "*.js" | "js.map")
+
+ghpages.settings
+
+git.remoteRepo := "git@github.com:binaryfoo/jstack.git"
