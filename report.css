@@ -15,6 +15,9 @@ span.sourceReference {
     font-size: smaller;
     color: dimgray;
 }
+.threadState {
+    font-size: smaller;
+}
 a.stack {
     text-decoration: none;
     color: inherit;
@@ -25,4 +28,7 @@ a.stack:hover {
 }
 ul {
     margin-bottom: 0;
+}
+td,.table>tbody>tr>td {
+    padding: 0;
 }
