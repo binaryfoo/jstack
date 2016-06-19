@@ -66,7 +66,7 @@ class HtmlReport(val writer: PrintWriter) {
       val first = summariseThread(group.threads.head)
       val comment = if (group.threads.size > 1) {
         val more = group.threads.drop(1)
-        threadListPopover(s"+ ${more.size} more with same stack", more.map(_.name))
+        threadListPopover(s"+ ${more.size} more with same stack", more.map(_.name)).render
       } else {
         ""
       }
@@ -101,17 +101,40 @@ class HtmlReport(val writer: PrintWriter) {
     writer.println("</ul>")
   }
 
-  def printGroupWithSameStack(threads: Seq[Thread]): Unit = {
-    writer.println("<ul>")
-    val first = summariseThread(threads.head)
-    val comment = if (threads.size > 1) {
-      val more = threads.drop(1)
-      threadListPopover(s"(+${more.size} more)", more.map(_.name))
-    } else {
-      ""
-    }
-    writer.println(formatStack(threads.head.stack, first, comment))
-    writer.println("</ul>")
+  def printGroupedByStack(groups: Seq[Seq[Thread]]): Unit = {
+    writer.print(table(
+      cls := "table",
+      thead(
+        th("Name"),
+        th("Frame"),
+        th("State"),
+        th("Count")
+      ),
+      tbody(
+        for (group <- groups) yield groupToTableRow(group)
+      )
+    ))
+  }
+
+  def groupToTableRow(threads: Seq[Thread]) = {
+    val first = threads.head
+    val (expandLink, collapsedTable) = formatExpandableStack(first.stack, _decorateTopFrame(first.stack.head))
+    Seq(
+      tr(
+        td(first.name),
+        td(expandLink),
+        td(cls := "threadState", first.state),
+        td(cls := "text-right", if (threads.size > 1) {
+          threadListPopover(threads.size.toString, threads.map(_.name))
+        } else {
+          threads.size.toString
+        })
+      ),
+      tr(
+        td(colspan := 4,
+          collapsedTable)
+      )
+    )
   }
 
   def printHeading(text: String): Unit = {
@@ -152,9 +175,39 @@ class HtmlReport(val writer: PrintWriter) {
      """.stripMargin
   }
 
-  def threadListPopover(text: String, names: Seq[String]): String = {
+  private def formatExpandableStack(stack: Seq[String], description: Seq[Modifier]) = {
+    val idAttr = s"stack-$stackId"
+    stackId += 1
+    val link = a(
+      role := "button",
+      href := s"#$idAttr",
+      data("toggle") := "collapse",
+      aria.expanded := "false",
+      aria.controls := s"$idAttr",
+      cls := "stack",
+      description
+    )
+    val collapsedTable = div(
+      cls := "stackTrace collapse",
+      id := idAttr,
+      table(cls := "stackTrace",
+        for (frame <- stack if frame.nonEmpty) yield _decorateFrame(frame)
+      )
+    )
+    (link, collapsedTable)
+  }
+
+  def threadListPopover(text: String, names: Seq[String]) = {
     val popoverText = names.mkString("<br>")
-    s"""<span data-container="body" data-toggle="popover" data-placement="bottom" tabindex="0" class="comment" data-content="$popoverText">$text</span>"""
+    span(
+      data("container") := "body",
+      data("toggle") := "popover",
+      data("placement") := "bottom",
+      data("content") := popoverText,
+      tabindex := 0,
+      cls := "comment",
+      text
+    )
   }
 
   val StackFrame = """([^(]+)"""
@@ -164,23 +217,42 @@ class HtmlReport(val writer: PrintWriter) {
   }
 
   def decorateTopFrame(frame: String): String = {
+    _decorateTopFrame(frame).map(_.render).mkString("\n")
+  }
+
+  def decorateFrame(frame: String): String = {
     if (frame.nonEmpty) {
-      val (pkg, methodName, sourceReference) = splitMethodCall(frame)
-      s"""<span class="package">$pkg</span><div class="methodCall">.$methodName(<span class="sourceReference">$sourceReference</span>)</div>"""
+      _decorateFrame(frame).render
     } else {
       ""
     }
   }
 
-  def decorateFrame(frame: String): String = {
-    if (frame.nonEmpty) {
-      val (pkg, methodName, sourceReference) = splitMethodCall(frame)
-      s"""<tr>
-          |<td class="package">$pkg</td><td class="methodCall">.$methodName(<span class="sourceReference">$sourceReference</span>)</td>
-          |</tr>""".stripMargin
+  private def _decorateTopFrame(frame: String) = {
+    if (frame.isEmpty) {
+      Seq.empty
     } else {
-      ""
+      val (pkg, methodName, sourceReference) = splitMethodCall(frame)
+      Seq(
+        span(cls := "package", pkg),
+        div(cls := "methodCall",
+          s".$methodName(",
+          span(cls := "sourceReference", sourceReference),
+          ")"
+        )
+      )
     }
+  }
+
+  private def _decorateFrame(frame: String) = {
+    val (pkg, methodName, sourceReference) = splitMethodCall(frame)
+    tr(
+      td(cls := "package", pkg),
+      td(cls := "methodCall",
+        s".$methodName(",
+        span(cls := "sourceReference", sourceReference)
+      )
+    )
   }
 
   val MethodCallParts = """([^(]+)\((.+)\)""".r
