@@ -14,11 +14,12 @@ object JsMain {
   def main(doc: html.Document, search: String) {
     val form = doc.getElementById("stackForm").asInstanceOf[Form]
     val input = doc.getElementById("stackInput").asInstanceOf[TextArea]
+    val contains = doc.getElementById("stackContains").asInstanceOf[TextArea]
     val viewType = doc.getElementById("viewType").asInstanceOf[Input]
     val output = doc.getElementById("output")
 
     val model = new JstackModel()
-    val controller = new JstackController(model, output, input, viewType)
+    val controller = new JstackController(model, output, input, contains, viewType)
 
     configureDragAndDropFile(input, controller)
 

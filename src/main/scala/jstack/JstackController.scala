@@ -7,11 +7,17 @@ import org.scalajs.dom
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-case class JstackController(model: JstackModel, output: dom.Element, input: dom.html.TextArea, viewType: dom.html.Input) {
+case class JstackController(model: JstackModel, output: dom.Element, input: dom.html.TextArea, contains: dom.html.TextArea, viewType: dom.html.Input) {
 
   def update(): Unit = {
+    val matchText = contains.value.toLowerCase
     for (threads <- model.from(input.value)) {
-      render(threads, viewType.value)
+      val filtered = if (matchText.nonEmpty) {
+        threads.filter(_.stackMentions(matchText))
+      } else {
+        threads
+      }
+      render(filtered, viewType.value)
     }
   }
 

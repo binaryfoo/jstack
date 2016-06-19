@@ -45,6 +45,8 @@ case class Thread(id: String,
   def stackTrace: String = {
     stack.mkString("\n")
   }
+
+  def stackMentions(text: String): Boolean = stack.exists(_.toLowerCase.contains(text))
 }
 
 object ParserState extends Enumeration {

@@ -13,17 +13,29 @@
 <body>
 
 <div class="container">
-    <form id="stackForm">
+    <form id="stackForm" class="form-horizontal">
         <div class="form-group">
-            <label for="stackInput">Stack Trace</label>
-            <textarea class="form-control" name="stackInput" id="stackInput" cols="80" rows="1" placeholder="Paste jstack output, URL or drop a file"></textarea>
+            <label for="stackInput" class="control-label col-sm-2" title="Paste a stack trace, a URL to a stack trace, or drop a file">Stack Trace</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" name="stackInput" id="stackInput" cols="80" rows="1" placeholder="Paste jstack output, URL or drop a file"></textarea>
+            </div>
         </div>
-        <label for="viewType">View</label>
-        <select name="viewType" id="viewType">
-            <option value="byStack" selected>Group by stack trace</option>
-            <option value="contention">Group lock contention</option>
-            <option value="raw">Raw</option>
-        </select>
+        <div class="form-group">
+            <label for="stackContains" class="control-label col-sm-2" title="Show only threads with a least one stack frame including this text">Contains</label>
+            <div class="col-sm-10">
+                <input id="stackContains" type="text" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="viewType" class="control-label col-sm-2">View</label>
+            <div class="col-sm-4">
+                <select name="viewType" id="viewType" class="form-control">
+                    <option value="byStack" selected>Group by stack trace</option>
+                    <option value="contention">Group lock contention</option>
+                    <option value="raw">Raw</option>
+                </select>
+            </div>
+        </div>
     </form>
     <div id="output"></div>
 </div>
