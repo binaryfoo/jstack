@@ -148,9 +148,12 @@ class JstackParser extends SpecificParser {
         line match {
           case FirstStackLine(state) =>
             updateLast(thread => thread.copy(state = state))
+            phase = StackTrace
+          case "" =>
+            phase = Ignore
           case _ =>
+            phase = StackTrace
         }
-        phase = StackTrace
       case "" =>
         phase = Ignore
       case _ if phase == StackTrace =>

@@ -28,4 +28,10 @@ class ParserTest extends FlatSpec with Matchers {
     val threads = Parser.parse("src/test/resources/examples/eg-1.txt")
     threads.size shouldBe 39
   }
+
+  "JNI global references line" should "be ignored" in {
+    val threads = Parser.parse("src/test/resources/examples/sunDump.2072.ITER_1.txt")
+    threads.size shouldBe 34
+    threads.last.stack shouldBe Seq.empty
+  }
 }
