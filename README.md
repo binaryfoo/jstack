@@ -32,3 +32,11 @@ Example from [go-log-12.txt](https://raw.githubusercontent.com/binaryfoo/jstack/
 ### Scala.js limitations
 
 * No scalatest execution in intellij [scalatest #743](https://github.com/scalatest/scalatest/issues/743)
+
+### Releasing
+
+Needs work. Run in sbt:
+
+    fullOpsJS
+    previewSite
+    ghpagesPushSite
