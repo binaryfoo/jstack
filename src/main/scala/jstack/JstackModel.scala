@@ -1,7 +1,7 @@
 package jstack
 
+import io.github.binaryfoo.yatal.{Parser, Thread}
 import org.scalajs.dom
-import x.Parser
 
 import scala.concurrent.{Future, Promise}
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -10,7 +10,7 @@ class JstackModel {
 
   val Url = """[ ]*(https?://[^ ]+).*""".r
 
-  def from(urlOrText: String): Future[Seq[x.Thread]] = {
+  def from(urlOrText: String): Future[Seq[Thread]] = {
     urlOrText match {
       case Url(url) =>
         fromUrl(url)
@@ -19,7 +19,7 @@ class JstackModel {
     }
   }
 
-  def fromUrl(url: String): Future[Seq[x.Thread]] = {
+  def fromUrl(url: String): Future[Seq[Thread]] = {
     for {
       text <- fetch(url)
       threads <- fromText(text)
@@ -43,7 +43,7 @@ class JstackModel {
   }
 
 
-  def fromText(text: String): Future[Seq[x.Thread]] = {
+  def fromText(text: String): Future[Seq[Thread]] = {
     Future(Parser.parseText(text))
   }
 }

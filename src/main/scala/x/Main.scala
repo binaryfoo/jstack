@@ -1,4 +1,6 @@
-import x._
+package x
+
+import io.github.binaryfoo.yatal.{BlockingTree, HtmlReport, Parser, Thread}
 
 object Main {
 

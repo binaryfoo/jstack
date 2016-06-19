@@ -1,4 +1,6 @@
-import x.{HtmlReport, Parser}
+package x
+
+import io.github.binaryfoo.yatal.{HtmlReport, Parser}
 
 object FindByFrame {
 

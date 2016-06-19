@@ -1,4 +1,4 @@
-package x
+package io.github.binaryfoo.yatal
 
 import java.io.PrintWriter
 

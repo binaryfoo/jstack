@@ -2,8 +2,9 @@ package jstack
 
 import java.io.{PrintWriter, StringWriter}
 
+import io.github.binaryfoo.yatal.{BlockingTree, HtmlReport, Thread}
 import org.scalajs.dom
-import x.{BlockingTree, HtmlReport}
+
 import scala.concurrent.ExecutionContext.Implicits.global
 
 case class JstackController(model: JstackModel, output: dom.Element, input: dom.html.TextArea, viewType: dom.html.Input) {
@@ -14,7 +15,7 @@ case class JstackController(model: JstackModel, output: dom.Element, input: dom.
     }
   }
 
-  def render(threads: Seq[x.Thread], viewType: String): Unit = {
+  def render(threads: Seq[Thread], viewType: String): Unit = {
     val out = new StringWriter()
     val writer = new PrintWriter(out)
     val report = new HtmlReport(writer)

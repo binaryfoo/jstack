@@ -1,4 +1,4 @@
-package x
+package io.github.binaryfoo.yatal
 
 import scala.collection.mutable.ArrayBuffer
 import scala.io.Source

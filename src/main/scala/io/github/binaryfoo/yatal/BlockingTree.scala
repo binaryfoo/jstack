@@ -1,4 +1,4 @@
-package x
+package io.github.binaryfoo.yatal
 
 case class BlockingTree(thread: Thread, blocked: Seq[BlockingTree]) {
 
