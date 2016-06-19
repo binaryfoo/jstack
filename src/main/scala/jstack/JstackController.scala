@@ -28,10 +28,7 @@ case class JstackController(model: JstackModel, output: dom.Element, input: dom.
       case "byStack" =>
         report.printGroupedByStack(Analyzer.groupByStack(threads).map(_._2))
       case "contention" =>
-        val roots = BlockingTree.buildBlockingTree(threads)
-        for (root <- roots) {
-          report.printTree(root)
-        }
+        report.printBlockingTree(BlockingTree.buildBlockingTree(threads))
       case _ =>
         report.printThreads(threads)
     }

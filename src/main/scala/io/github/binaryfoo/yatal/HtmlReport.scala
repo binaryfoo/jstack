@@ -2,6 +2,7 @@ package io.github.binaryfoo.yatal
 
 import java.io.{PrintWriter, StringWriter}
 
+import scalatags.Text
 import scalatags.Text.all._
 
 class HtmlReport(val writer: PrintWriter) {
@@ -58,25 +59,45 @@ class HtmlReport(val writer: PrintWriter) {
     writer.close()
   }
 
-  def printTree(root: DeDuplicatedBlockingTree): Unit = {
-    writer.println("<ul>")
-    writer.println(formatThread(root.lockHolder, s"(${root.totalChildren} downstream)"))
-    for (group <- root.blocked) {
-      writer.println("<ul>")
-      val first = summariseThread(group.threads.head)
-      val comment = if (group.threads.size > 1) {
-        val more = group.threads.drop(1)
-        threadListPopover(s"+ ${more.size} more with same stack", more.map(_.name)).render
-      } else {
-        ""
-      }
-      writer.println(formatStack(group.stack, first, comment))
-      writer.println("</ul>")
-    }
-    for (internal <- root.children) {
-      printTree(internal)
-    }
-    writer.println("</ul>")
+  def printBlockingTree(roots: Seq[DeDuplicatedBlockingTree]): Unit = {
+    writer.println(ul(
+      for (root <- roots) yield toListElement(root)
+    ))
+  }
+
+  def toListElement(root: DeDuplicatedBlockingTree): Text.TypedTag[String] = {
+    val (expandLink, collapsedTable) = formatExpandableStack(root.lockHolder.stack, threadSummary(root.lockHolder))
+    li(
+      expandLink,
+      s" (${root.totalChildren} downstream) ",
+      collapsedTable,
+      ul(
+        for (group <- root.blocked) yield {
+          val (expandLink, collapsedTable) = formatExpandableStack(group.stack, threadSummary(group.threads.head))
+          li(
+            expandLink,
+            if (group.threads.size > 1) {
+              val more = group.threads.drop(1)
+              threadListPopover(s" + ${more.size} duplicates ", more.map(_.name))
+            } else {
+              " "
+            },
+            collapsedTable
+          )
+        },
+        for (internal <- root.children) yield toListElement(internal)
+      )
+    )
+  }
+
+  def threadSummary(thread: Thread): Seq[Modifier] = {
+    Seq(
+      thread.name,
+      " ",
+      decorateTopFrame(thread.stack.headOption),
+      " ",
+      thread.state
+    )
   }
 
   def printGroupedByStack(groups: Seq[Seq[Thread]]): Unit = {
@@ -96,7 +117,7 @@ class HtmlReport(val writer: PrintWriter) {
 
   def groupToTableRow(threads: Seq[Thread]) = {
     val first = threads.head
-    val (expandLink, collapsedTable) = formatExpandableStack(first.stack, _decorateTopFrame(first.stack.headOption))
+    val (expandLink, collapsedTable) = formatExpandableStack(first.stack, decorateTopFrame(first.stack.headOption))
     Seq(
       tr(
         td(first.name),
@@ -130,7 +151,7 @@ class HtmlReport(val writer: PrintWriter) {
   }
 
   def threadToTableRow(thread: Thread) = {
-    val (expandLink, collapsedTable) = formatExpandableStack(thread.stack, _decorateTopFrame(thread.stack.headOption))
+    val (expandLink, collapsedTable) = formatExpandableStack(thread.stack, decorateTopFrame(thread.stack.headOption))
     Seq(
       tr(
         td(thread.name),
@@ -157,31 +178,6 @@ class HtmlReport(val writer: PrintWriter) {
     ))
   }
 
-  def formatThread(thread: Thread, comment: String = ""): String = {
-    formatStack(thread.stack, summariseThread(thread), comment)
-  }
-
-  def summariseThread(thread: Thread): String = {
-    s"${thread.name} ${decorateTopFrame(thread.stack.headOption)} ${thread.state}"
-  }
-
-  def formatStack(stack: Seq[String], description: String, comment: String = ""): String = {
-    val id = s"stack-$stackId"
-    stackId += 1
-    s"""<li>
-        |<a role="button" href="#$id" data-toggle="collapse" aria-expanded="false" aria-controls="$id" class="stack">
-        |  $description
-        |</a>
-        | $comment
-        |<span class="stackTrace collapse" id="$id">
-        |<table class="stackTrace">
-        |${decorateFrames(stack)}
-        |</table>
-        |</span>
-        |</li>
-     """.stripMargin
-  }
-
   private def formatExpandableStack(stack: Seq[String], description: Seq[Modifier]) = {
     val idAttr = s"stack-$stackId"
     stackId += 1
@@ -198,7 +194,7 @@ class HtmlReport(val writer: PrintWriter) {
       cls := "stackTrace collapse",
       id := idAttr,
       table(cls := "stackTrace",
-        for (frame <- stack if frame.nonEmpty) yield _decorateFrame(frame)
+        for (frame <- stack if frame.nonEmpty) yield decorateFrame(frame)
       )
     )
     (link, collapsedTable)
@@ -219,16 +215,7 @@ class HtmlReport(val writer: PrintWriter) {
 
   val StackFrame = """([^(]+)"""
 
-  def decorateFrames(frames: Seq[String]): String = {
-    (for (frame <- frames if frame.nonEmpty)
-      yield _decorateFrame(frame).render).mkString("\n")
-  }
-
-  def decorateTopFrame(frame: Option[String]): String = {
-    _decorateTopFrame(frame).map(_.render).mkString("\n")
-  }
-
-  private def _decorateTopFrame(maybeFrame: Option[String]) = {
+  private def decorateTopFrame(maybeFrame: Option[String]) = {
     maybeFrame match {
       case Some(frame) if frame.nonEmpty =>
         val (pkg, methodName, sourceReference) = splitMethodCall(frame)
@@ -245,7 +232,7 @@ class HtmlReport(val writer: PrintWriter) {
     }
   }
 
-  private def _decorateFrame(frame: String) = {
+  private def decorateFrame(frame: String) = {
     val (pkg, methodName, sourceReference) = splitMethodCall(frame)
     tr(
       td(cls := "package", pkg),

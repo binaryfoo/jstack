@@ -21,10 +21,7 @@ object Main {
 
     val report = HtmlReport("report.html")
     report.start()
-    for (root <- roots) {
-      report.printTree(root)
-    }
-
+    report.printBlockingTree(roots)
     report.finish()
   }
 
