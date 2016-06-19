@@ -74,6 +74,9 @@ object Parser {
         parser = new GoSupportParser
       } else if (line.startsWith("Full thread dump")) {
         parser = new JstackParser
+      } else if (line.startsWith("Thread ")) {
+        parser = new ForcedJstackParser
+        parser(line, lineNumber)
       }
       lineNumber += 1
     }
@@ -158,6 +161,42 @@ class JstackParser extends SpecificParser {
         phase = Ignore
       case _ if phase == StackTrace =>
         updateLast(thread => thread.copy(stack = thread.stack :+ line.trim.replace("at ", "")))
+      case _ =>
+    }
+  }
+
+  def updateLast(f: Thread => Thread): Unit = {
+    for (last <- threads.lastOption) {
+      threads(threads.length - 1) = f(last)
+    }
+  }
+}
+
+/**
+  * Output from jstack -F
+  * Name unknown - not discovered by jstack in this mode...
+  */
+class ForcedJstackParser extends SpecificParser {
+  object ParserState extends Enumeration {
+    var StackTrace, Ignore = Value
+  }
+  import ParserState._
+
+  // Eg: "Thread 16653: (state = BLOCKED)"
+  val ThreadDetails = """Thread ([^:]+): \(state = ([^ ]+)\)""".r
+  var phase = Ignore
+  var threads = ArrayBuffer[Thread]()
+
+  override def apply(line: String, lineNumber: Int): Unit = {
+    line match {
+      case ThreadDetails(id, state) =>
+        updateLast(thread => thread.copy(lastLine = lineNumber))
+        threads += Thread(id, id, state, firstLine = lineNumber)
+        phase = StackTrace
+      case "" =>
+        phase = Ignore
+      case _ if phase == StackTrace =>
+        updateLast(thread => thread.copy(stack = thread.stack :+ line.trim.replaceFirst("^-", "")))
       case _ =>
     }
   }

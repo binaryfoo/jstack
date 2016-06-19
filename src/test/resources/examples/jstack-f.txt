@@ -1,0 +1,26 @@
+Deadlock Detection:
+
+No deadlocks found.
+
+Thread 16653: (state = BLOCKED)
+ - sun.misc.Unsafe.park(boolean, long) @bci=0 (Compiled frame; information may be imprecise)
+ - java.util.concurrent.locks.LockSupport.parkNanos(java.lang.Object, long) @bci=20, line=226 (Interpreted frame)
+ - java.util.concurrent.SynchronousQueue$TransferStack.awaitFulfill(java.util.concurrent.SynchronousQueue$TransferStack$SNode, boolean, long) @bci=174, line=460 (Compiled frame)
+ - java.util.concurrent.SynchronousQueue$TransferStack.transfer(java.lang.Object, boolean, long) @bci=102, line=359 (Compiled frame)
+ - java.util.concurrent.SynchronousQueue.poll(long, java.util.concurrent.TimeUnit) @bci=11, line=942 (Interpreted frame)
+ - java.util.concurrent.ThreadPoolExecutor.getTask() @bci=141, line=1068 (Compiled frame)
+ - java.util.concurrent.ThreadPoolExecutor.runWorker(java.util.concurrent.ThreadPoolExecutor$Worker) @bci=26, line=1130 (Compiled frame)
+ - java.util.concurrent.ThreadPoolExecutor$Worker.run() @bci=5, line=615 (Interpreted frame)
+ - java.lang.Thread.run() @bci=11, line=722 (Interpreted frame)
+
+
+Thread 16483: (state = BLOCKED)
+ - java.lang.Object.wait(long) @bci=0 (Compiled frame; information may be imprecise)
+ - com.sun.jmx.remote.internal.ServerCommunicatorAdmin$Timeout.run() @bci=227, line=168 (Compiled frame)
+ - java.lang.Thread.run() @bci=11, line=722 (Interpreted frame)
+
+
+Thread 16480: (state = BLOCKED)
+ - java.lang.Object.wait(long) @bci=0 (Compiled frame; information may be imprecise)
+ - com.sun.jmx.remote.internal.ServerCommunicatorAdmin$Timeout.run() @bci=227, line=168 (Compiled frame)
+ - java.lang.Thread.run() @bci=11, line=722 (Interpreted frame)

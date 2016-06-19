@@ -34,4 +34,12 @@ class ParserTest extends FlatSpec with Matchers {
     threads.size shouldBe 34
     threads.last.stack shouldBe Seq.empty
   }
+
+  "jstack -F output" should "parse" in {
+    val threads = Parser.parse("src/test/resources/examples/jstack-f.txt")
+    threads.size shouldBe 3
+    threads.head.id shouldBe "16653"
+    threads.head.name shouldBe "16653"
+    threads.head.state shouldBe "BLOCKED"
+  }
 }
