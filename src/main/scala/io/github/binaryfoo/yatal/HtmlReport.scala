@@ -79,28 +79,6 @@ class HtmlReport(val writer: PrintWriter) {
     writer.println("</ul>")
   }
 
-  def printTree(root: Thread, edges: Set[(Thread, Thread)] = Set.empty): Unit = {
-    val children = edges.filter(_._2 == root)
-    val comment = if (children.nonEmpty) "(" + children.size + " downstream)" else ""
-    writer.println("<ul>")
-    writer.println(formatThread(root, comment))
-    for ((src, dest) <- children) {
-      printTree(src, edges)
-    }
-    writer.println("</ul>")
-  }
-
-  def printTree(root: String, children: Seq[Thread]): Unit = {
-    writer.println("<ul>")
-    writer.println("<li>" + root + "</li>")
-    writer.println("<ul>")
-    for (child <- children) {
-      writer.println(formatThread(child) )
-    }
-    writer.println("</ul>")
-    writer.println("</ul>")
-  }
-
   def printGroupedByStack(groups: Seq[Seq[Thread]]): Unit = {
     writer.print(table(
       cls := "table",
@@ -132,6 +110,35 @@ class HtmlReport(val writer: PrintWriter) {
       ),
       tr(
         td(colspan := 4,
+          collapsedTable)
+      )
+    )
+  }
+
+  def printThreads(threads: Seq[Thread]): Unit = {
+    writer.print(table(
+      cls := "table",
+      thead(
+        th("Name"),
+        th("Frame"),
+        th("State")
+      ),
+      tbody(
+        for (thread <- threads) yield threadToTableRow(thread)
+      )
+    ))
+  }
+
+  def threadToTableRow(thread: Thread) = {
+    val (expandLink, collapsedTable) = formatExpandableStack(thread.stack, _decorateTopFrame(thread.stack.headOption))
+    Seq(
+      tr(
+        td(thread.name),
+        td(expandLink),
+        td(cls := "threadState", thread.state)
+      ),
+      tr(
+        td(colspan := 3,
           collapsedTable)
       )
     )
@@ -213,19 +220,12 @@ class HtmlReport(val writer: PrintWriter) {
   val StackFrame = """([^(]+)"""
 
   def decorateFrames(frames: Seq[String]): String = {
-    frames.map(decorateFrame).mkString("\n")
+    (for (frame <- frames if frame.nonEmpty)
+      yield _decorateFrame(frame).render).mkString("\n")
   }
 
   def decorateTopFrame(frame: Option[String]): String = {
     _decorateTopFrame(frame).map(_.render).mkString("\n")
-  }
-
-  def decorateFrame(frame: String): String = {
-    if (frame.nonEmpty) {
-      _decorateFrame(frame).render
-    } else {
-      ""
-    }
   }
 
   private def _decorateTopFrame(maybeFrame: Option[String]) = {

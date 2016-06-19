@@ -33,9 +33,7 @@ case class JstackController(model: JstackModel, output: dom.Element, input: dom.
           report.printTree(root)
         }
       case _ =>
-        for (thread <- threads) {
-          report.printTree(thread)
-        }
+        report.printThreads(threads)
     }
 
     report.printHeading("Threads in each state")
