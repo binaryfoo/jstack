@@ -8,7 +8,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class JstackModel {
 
-  val Url = """[ ]+(https?://[^ ]+).*""".r
+  val Url = """[ ]*(https?://[^ ]+).*""".r
 
   def from(urlOrText: String): Future[Seq[x.Thread]] = {
     urlOrText match {
