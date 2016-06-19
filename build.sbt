@@ -10,6 +10,8 @@ JsProductionize.settings
 
 name := "jstack"
 
+organization := "io.github.binaryfoo"
+
 version := "0.1-SNAPSHOT"
 
 scalaVersion := "2.11.8"
@@ -19,7 +21,8 @@ libraryDependencies ++= Seq(
   "org.scala-js" %%% "scalajs-tools" % "0.6.9",
   "com.github.karasiq" %%% "scalajs-bootstrap" % "1.0.5",
   "com.lihaoyi" %%% "scalatags" % "0.5.4",
-  "org.scalatest" %%% "scalatest" % "3.0.0-M15" % "test"
+  "org.scalatest" %%% "scalatest" % "3.0.0-RC2" % "test",
+  "org.scalatest" %% "scalatest" % "3.0.0-RC2" % "test"
 )
 
 skip in packageJSDependencies := false

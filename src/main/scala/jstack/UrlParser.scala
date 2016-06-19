@@ -1,5 +1,7 @@
 package jstack
 
+import scala.scalajs.js
+
 object UrlParser {
 
   def parseQueryParams(search: String): Map[String, String] = {
@@ -7,7 +9,7 @@ object UrlParser {
       (for {
         kvPair <- search.substring(1).split('&')
         (key, value) <- parsePair(kvPair)
-      } yield (key, value)).toMap
+      } yield (key, js.URIUtils.decodeURIComponent(value))).toMap
     } else {
       Map.empty
     }

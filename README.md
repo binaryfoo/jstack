@@ -28,3 +28,7 @@ Example from [go-log-12.txt](https://raw.githubusercontent.com/binaryfoo/jstack/
 ### Thoughts of others
 
 * [Structured dumping enabling better tooling](http://www.outerthoughts.com/threaddumps/thread_dumps.html) In this case XML, XLST and graphviz.
+
+### Scala.js limitations
+
+* No scalatest execution in intellij [scalatest #743](https://github.com/scalatest/scalatest/issues/743)
