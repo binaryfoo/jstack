@@ -118,7 +118,7 @@ class HtmlReport(val writer: PrintWriter) {
 
   def groupToTableRow(threads: Seq[Thread]) = {
     val first = threads.head
-    val (expandLink, collapsedTable) = formatExpandableStack(first.stack, _decorateTopFrame(first.stack.head))
+    val (expandLink, collapsedTable) = formatExpandableStack(first.stack, _decorateTopFrame(first.stack.headOption))
     Seq(
       tr(
         td(first.name),
@@ -155,7 +155,7 @@ class HtmlReport(val writer: PrintWriter) {
   }
 
   def summariseThread(thread: Thread): String = {
-    s"${thread.name} ${decorateTopFrame(thread.stack.head)} ${thread.state}"
+    s"${thread.name} ${decorateTopFrame(thread.stack.headOption)} ${thread.state}"
   }
 
   def formatStack(stack: Seq[String], description: String, comment: String = ""): String = {
@@ -216,7 +216,7 @@ class HtmlReport(val writer: PrintWriter) {
     frames.map(decorateFrame).mkString("\n")
   }
 
-  def decorateTopFrame(frame: String): String = {
+  def decorateTopFrame(frame: Option[String]): String = {
     _decorateTopFrame(frame).map(_.render).mkString("\n")
   }
 
@@ -228,19 +228,20 @@ class HtmlReport(val writer: PrintWriter) {
     }
   }
 
-  private def _decorateTopFrame(frame: String) = {
-    if (frame.isEmpty) {
-      Seq.empty
-    } else {
-      val (pkg, methodName, sourceReference) = splitMethodCall(frame)
-      Seq(
-        span(cls := "package", pkg),
-        div(cls := "methodCall",
-          s".$methodName(",
-          span(cls := "sourceReference", sourceReference),
-          ")"
+  private def _decorateTopFrame(maybeFrame: Option[String]) = {
+    maybeFrame match {
+      case Some(frame) if frame.nonEmpty =>
+        val (pkg, methodName, sourceReference) = splitMethodCall(frame)
+        Seq(
+          span(cls := "package", pkg),
+          div(cls := "methodCall",
+            s".$methodName(",
+            span(cls := "sourceReference", sourceReference),
+            ")"
+          )
         )
-      )
+      case _ =>
+        Seq.empty
     }
   }
 
@@ -250,7 +251,8 @@ class HtmlReport(val writer: PrintWriter) {
       td(cls := "package", pkg),
       td(cls := "methodCall",
         s".$methodName(",
-        span(cls := "sourceReference", sourceReference)
+        span(cls := "sourceReference", sourceReference),
+        ")"
       )
     )
   }

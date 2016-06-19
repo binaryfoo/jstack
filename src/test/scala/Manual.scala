@@ -1,23 +1,13 @@
-import java.io.FileWriter
-
-import io.github.binaryfoo.yatal.{Analyzer, InMemoryHtmlReport, Parser}
-import scalatags.Text.all._
+import io.github.binaryfoo.yatal.{Analyzer, Parser}
 
 object Manual {
 
   def main(args: Array[String]) {
-    val threads = Parser.parse("src/test/resources/go-log-12.txt")
+    val threads = Parser.parse("src/test/resources/examples/eg-1.txt")
     val groups = Analyzer.groupByStack(threads)
-    val report = new InMemoryHtmlReport()
-    val trs = report.groupToTableRow(groups.head._2)
-
-    val a = new FileWriter("a.html")
-    a.write(
-      html(
-        body(
-          table(trs)
-        )).render
-    )
-    a.close()
+    for ((stack, threads) <- groups) {
+      println(stack)
+      println(threads)
+    }
   }
 }

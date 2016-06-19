@@ -49,14 +49,12 @@ case class Thread(id: String,
   def stackMentions(text: String): Boolean = stack.exists(_.toLowerCase.contains(text))
 }
 
-object ParserState extends Enumeration {
-  var StackTrace, LockedMonitors, Ignore = Value
+trait SpecificParser {
+  def apply(line: String, lineNumber: Int): Unit
+  def threads: Seq[Thread]
 }
 
 object Parser {
-
-  val ThreadDetails = """(\d+), ([^,]+), (.+)""".r
-  val LockedMonitorDetails = """(.*?) at ([^(]+)\(([^)]+)\)""".r
 
   def parse(fileName: String): Seq[Thread] = {
     parse(Source.fromFile(fileName).getLines())
@@ -67,34 +65,58 @@ object Parser {
   }
 
   def parse(lines: Iterator[String]): Seq[Thread] = {
-    import ParserState._
-    var phase = Ignore
-    var thread: Thread = null
-    var threads = ArrayBuffer[Thread]()
+    var parser: SpecificParser = NullParser
     var lineNumber = 1
-
-    for (line <- lines.dropWhile(line => !line.startsWith("All thread stacktraces"))) {
-      line match {
-        case ThreadDetails(id, name, state) =>
-          if (thread != null) {
-            threads += thread.copy(lastLine = lineNumber)
-          }
-          thread = Thread(id, name, state, firstLine = lineNumber)
-        case "Locked Monitors:" =>
-          phase = LockedMonitors
-        case "Stacktrace:" =>
-          phase = StackTrace
-        case "" =>
-          phase = Ignore
-        case _ if phase == LockedMonitors && line != "Locked Synchronizers:" =>
-          thread = thread.copy(monitors = parseMonitors(line))
-        case _ if phase == StackTrace =>
-          thread = thread.copy(stack = thread.stack :+ line.trim)
-        case _ =>
+    for (line <- lines) {
+      if (parser != NullParser) {
+        parser(line, lineNumber)
+      } else if (line.startsWith("All thread stacktraces")) {
+        parser = new GoSupportParser
+      } else if (line.startsWith("Full thread dump")) {
+        parser = new JstackParser
       }
       lineNumber += 1
     }
-    threads
+    parser.threads
+  }
+
+}
+
+object NullParser extends SpecificParser {
+  override def apply(line: String, lineNumber: Int): Unit = {}
+  override def threads: Seq[Thread] = Seq.empty
+}
+
+class GoSupportParser extends SpecificParser {
+  object ParserState extends Enumeration {
+    var StackTrace, LockedMonitors, Ignore = Value
+  }
+  import ParserState._
+  val ThreadDetails = """(\d+), ([^,]+), (.+)""".r
+  val LockedMonitorDetails = """(.*?) at ([^(]+)\(([^)]+)\)""".r
+  var phase = Ignore
+  var thread: Thread = null
+  var threads = ArrayBuffer[Thread]()
+
+  override def apply(line: String, lineNumber: Int): Unit = {
+    line match {
+      case ThreadDetails(id, name, state) =>
+        if (thread != null) {
+          threads += thread.copy(lastLine = lineNumber)
+        }
+        thread = Thread(id, name, state, firstLine = lineNumber)
+      case "Locked Monitors:" =>
+        phase = LockedMonitors
+      case "Stacktrace:" =>
+        phase = StackTrace
+      case "" =>
+        phase = Ignore
+      case _ if phase == LockedMonitors && line != "Locked Synchronizers:" =>
+        thread = thread.copy(monitors = parseMonitors(line))
+      case _ if phase == StackTrace =>
+        thread = thread.copy(stack = thread.stack :+ line.trim)
+      case _ =>
+    }
   }
 
   def parseMonitors(line: String): Seq[LockedMonitor] = {
@@ -104,3 +126,43 @@ object Parser {
     }.toSeq
   }
 }
+
+class JstackParser extends SpecificParser {
+  object ParserState extends Enumeration {
+    var StackTrace, FirstStackTraceLine, Ignore = Value
+  }
+  import ParserState._
+
+  val ThreadDetails = """"([^"]+)".*tid=([^ ]+).*""".r
+  val FirstStackLine = """.*: ([A-Z_]+).*""".r
+  var phase = Ignore
+  var threads = ArrayBuffer[Thread]()
+
+  override def apply(line: String, lineNumber: Int): Unit = {
+    line match {
+      case ThreadDetails(name, id) =>
+        updateLast(thread => thread.copy(lastLine = lineNumber))
+        threads += Thread(id, name, "", firstLine = lineNumber)
+        phase = FirstStackTraceLine
+      case _ if phase == FirstStackTraceLine =>
+        line match {
+          case FirstStackLine(state) =>
+            updateLast(thread => thread.copy(state = state))
+          case _ =>
+        }
+        phase = StackTrace
+      case "" =>
+        phase = Ignore
+      case _ if phase == StackTrace =>
+        updateLast(thread => thread.copy(stack = thread.stack :+ line.trim.replace("at ", "")))
+      case _ =>
+    }
+  }
+
+  def updateLast(f: Thread => Thread): Unit = {
+    for (last <- threads.lastOption) {
+      threads(threads.length - 1) = f(last)
+    }
+  }
+}
+
