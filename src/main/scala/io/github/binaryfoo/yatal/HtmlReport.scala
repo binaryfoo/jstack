@@ -99,6 +99,19 @@ class HtmlReport(writer: PrintWriter) {
     writer.println("</ul>")
   }
 
+  def printGroupWithSameStack(threads: Seq[Thread]): Unit = {
+    writer.println("<ul>")
+    val first = summariseThread(threads.head)
+    val comment = if (threads.size > 1) {
+      val more = threads.drop(1)
+      threadListPopover(s"(+${more.size} more)", more.map(_.name))
+    } else {
+      ""
+    }
+    writer.println(formatStack(threads.head.stack, first, comment))
+    writer.println("</ul>")
+  }
+
   def formatThread(thread: Thread, comment: String = ""): String = {
     formatStack(thread.stack, summariseThread(thread), comment)
   }

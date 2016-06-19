@@ -23,8 +23,7 @@ case class JstackController(model: JstackModel, output: dom.Element, input: dom.
     viewType match {
       case "byStack" =>
         for ((stack, threads) <- threads.groupBy(_.stack).toSeq.sortBy(_._2.size).reverse) {
-          val states = threads.map(_.state).toSet.mkString("{", ",", "}")
-          report.printTree(threads.size + " " + states, threads)
+          report.printGroupWithSameStack(threads)
         }
       case "contention" =>
         val roots = BlockingTree.buildBlockingTree(threads)
