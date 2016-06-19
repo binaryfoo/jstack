@@ -1,6 +1,6 @@
 package x
 
-import io.github.binaryfoo.yatal.{BlockingTree, HtmlReport, Parser, Thread}
+import io.github.binaryfoo.yatal._
 
 object Main {
 
@@ -12,7 +12,7 @@ object Main {
 
     val threads = Parser.parse(args(0))
 
-    for ((state, count) <- countByState(threads)) {
+    for ((state, count) <- Analyzer.groupByState(threads)) {
       println(s"$state\t$count")
     }
     println(s"${threads.size} total")
@@ -27,7 +27,5 @@ object Main {
 
     report.finish()
   }
-
-  def countByState(threads: Seq[Thread]): Map[String, Int] = threads.groupBy(_.state).mapValues(_.size)
 
 }

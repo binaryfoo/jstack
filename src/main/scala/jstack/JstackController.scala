@@ -2,7 +2,7 @@ package jstack
 
 import java.io.{PrintWriter, StringWriter}
 
-import io.github.binaryfoo.yatal.{BlockingTree, HtmlReport, Thread}
+import io.github.binaryfoo.yatal._
 import org.scalajs.dom
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -22,13 +22,11 @@ case class JstackController(model: JstackModel, output: dom.Element, input: dom.
   }
 
   def render(threads: Seq[Thread], viewType: String): Unit = {
-    val out = new StringWriter()
-    val writer = new PrintWriter(out)
-    val report = new HtmlReport(writer)
+    val report = new InMemoryHtmlReport()
 
     viewType match {
       case "byStack" =>
-        for ((stack, threads) <- threads.groupBy(_.stack).toSeq.sortBy(_._2.size).reverse) {
+        for ((stack, threads) <- Analyzer.groupByStack(threads)) {
           report.printGroupWithSameStack(threads)
         }
       case "contention" =>
@@ -42,7 +40,9 @@ case class JstackController(model: JstackModel, output: dom.Element, input: dom.
         }
     }
 
-    writer.close()
-    output.innerHTML = out.toString
+    report.printHeading("Threads in each state")
+    report.printStateSummary(Analyzer.groupByState(threads))
+
+    output.innerHTML = report.render
   }
 }

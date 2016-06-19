@@ -1,8 +1,10 @@
 package io.github.binaryfoo.yatal
 
-import java.io.PrintWriter
+import java.io.{PrintWriter, StringWriter}
 
-class HtmlReport(writer: PrintWriter) {
+import scalatags.Text.all._
+
+class HtmlReport(val writer: PrintWriter) {
 
   private var stackId = 1
 
@@ -112,6 +114,19 @@ class HtmlReport(writer: PrintWriter) {
     writer.println("</ul>")
   }
 
+  def printHeading(text: String): Unit = {
+    writer.print(h4(text))
+  }
+
+  def printStateSummary(states: Map[String, Int]): Unit = {
+    val rows = for ((state, count) <- states) yield tr(td(state), td(count))
+    writer.print(table(
+      cls := "table",
+      thead(tr(td("State"), td("Count"))),
+      tbody(rows.toSeq)
+    ))
+  }
+
   def formatThread(thread: Thread, comment: String = ""): String = {
     formatStack(thread.stack, summariseThread(thread), comment)
   }
@@ -188,6 +203,13 @@ class HtmlReport(writer: PrintWriter) {
     } else {
       ref
     }
+  }
+}
+
+class InMemoryHtmlReport(val buffer: StringWriter = new StringWriter()) extends HtmlReport(new PrintWriter(buffer)) {
+  def render: String = {
+    writer.flush()
+    buffer.toString
   }
 }
 
